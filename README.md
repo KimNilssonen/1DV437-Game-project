@@ -4,7 +4,8 @@
 ####Controls: "Arrow keys" & "Numeric keys"
 
 ---  
-####Below is requirements for my own purpose. If you want to read more about the project, check the repository wiki.
+####Below is requirements for my own purpose.  
+If you want to read more about the project, check the repository wiki.
 
 #####Krav
 
