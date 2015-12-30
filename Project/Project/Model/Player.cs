@@ -15,13 +15,6 @@ namespace Project.Model
         public Vector2 acceleration;
 
         public Vector2 speed = Vector2.Zero;
-       
-        private Rectangle rectangle;
-        public Rectangle Rectangle
-        {
-            get { return rectangle; }
-            set { rectangle = value; }
-        }
 
         // X movement stuff.
         float maxSpeed = 0.175f;
@@ -31,40 +24,58 @@ namespace Project.Model
         float standardGravity = 1.5f;
         float size = 0.025f;
 
-        private bool isAlive;
+
+        private Rectangle rectangle;
+        private bool isAlive = true;
+        private bool playerGotPowerUp;
+        private bool canJumpAgain;
+        private bool canJump;
+        private bool touchingFloor;
+        private bool isFalling;
+
+
+        public Rectangle Rectangle
+        {
+            get { return rectangle; }
+            set { rectangle = value; }
+        }
+
         public bool IsAlive
         {
             get { return isAlive; }
             set { isAlive = value; }
         }
 
-        private bool canJumpAgain;
+        public bool PlayerGotPowerUp
+        {
+            get { return playerGotPowerUp; }
+            set { playerGotPowerUp = true; }
+        }
+
         public bool CanJumpAgain
         {
             get { return canJumpAgain; }
             set { canJumpAgain = value; }
         }
 
-        private bool canJump;
         public bool CanJump
         {
             get { return canJump; }
             set { canJump = value; }
         }
 
-        private bool touchingFloor;
         public bool TouchingFloor
         {
             get { return touchingFloor; }
             set { touchingFloor = value; }
         }
 
-        private bool isFalling;
         public bool IsFalling
         {
             get { return isFalling; }
             set { isFalling = value; }
         }
+
 
         public void UpdatePosition(float gameTime)
         {

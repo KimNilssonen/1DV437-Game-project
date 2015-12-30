@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Project.Model;
+using Project.Levels;
 using Project.View;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
@@ -21,7 +22,7 @@ namespace Project.Controller
 
         // View stuff.
         PlayerView playerView;
-        Level level;
+        LevelSystem levelSystem;
         Camera camera;
 
         // Textures.
@@ -34,32 +35,26 @@ namespace Project.Controller
             Square,
             Triangle
         }
+        
         PlayerForm currentPlayerForm;
+
+        private int selectedLevel = 0;
+        private bool gameOver;
+        public bool GameOver
+        {
+            get { return gameOver; }
+            set { gameOver = value; }
+        }
 
         public GameController(ContentManager Content, GraphicsDeviceManager graphics)
         {
-
-            camera = new Camera(graphics.GraphicsDevice.Viewport);
-            level = new Level();
             content = Content;
             currentPlayerForm = PlayerForm.Square;
 
             Tiles.Content = Content;
-            
-            level.Generate(new int[,]
-            {
-                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                {0,0,0,0,0,0,0,0,1,1,0,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0},
-                {0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0},
-                {0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0},
-                {0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,9},
-                {1,1,1,1,1,1,1,1,0,0,0,1,1,1,1,1,0,1,1,0,0,1,1,0,0,1,1,0,0,0,1,1,1,0,1,1,1,1,1,0,0,0,1,1},
-            }, 48);
 
+            camera = new Camera(graphics.GraphicsDevice.Viewport);
+            levelSystem = new LevelSystem(content, camera, selectedLevel);
             
 
             // If new game, load this player texture.
@@ -89,7 +84,7 @@ namespace Project.Controller
                 playerTexture = content.Load<Texture2D>("PlayerSquare");
                 currentPlayerForm = PlayerForm.Square;
             }
-            else if (currentKeyboardState.IsKeyDown(Keys.D2))
+            else if (currentKeyboardState.IsKeyDown(Keys.D2) && playerSimulation.PlayerHasPowerUp())
             {
                 playerTexture = content.Load<Texture2D>("PlayerTriangle");
                 currentPlayerForm = PlayerForm.Triangle;
@@ -98,21 +93,30 @@ namespace Project.Controller
 
         public void Update(float gameTime)
         {
-
-            currentKeyboardState = Keyboard.GetState();
-
-            changePlayerTexture(currentKeyboardState);
-
-            playerSimulation.UpdateMovement(gameTime, currentKeyboardState, currentPlayerForm);
-            
-            foreach (CollisionTiles tile in level.CollisionTiles)
+            if (playerSimulation.isPlayerAlive())
             {
-                // Using camera in playerSimulation to be able to use rectangles.
-                playerSimulation.Collision(tile.Rectangle, level.Width, level.Height, camera);
-                camera.Update(camera.getVisualCoords(playerSimulation.getPosition()), level.Width, level.Height);
-                
+                currentKeyboardState = Keyboard.GetState();
+                changePlayerTexture(currentKeyboardState);
+
+                playerSimulation.UpdateMovement(gameTime, currentKeyboardState, currentPlayerForm);
+
+                foreach (CollisionTiles tile in levelSystem.CollisionTiles)
+                {
+
+                    // Using camera in playerSimulation.Collision to be able to use rectangles.
+                    playerSimulation.Collision(tile.Rectangle, levelSystem.Width, levelSystem.Height, camera);
+                    camera.Update(camera.getVisualCoords(playerSimulation.getPosition()), levelSystem.Width, levelSystem.Height);
+                }
+
+                if (levelSystem.playerGetsPowerUp(playerSimulation.getRectangle()))
+                {
+                    playerSimulation.PlayerGotPowerUp();
+                }
             }
-            
+            else
+            {
+                GameOver = true;
+            }         
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -122,7 +126,8 @@ namespace Project.Controller
                               null, null, null, null,
                               camera.Transform);
 
-            level.Draw(spriteBatch);
+            levelSystem.Draw(spriteBatch);
+            
             playerView.Draw(spriteBatch, playerTexture);
 
             spriteBatch.End();

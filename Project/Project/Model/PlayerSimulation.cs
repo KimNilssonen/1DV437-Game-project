@@ -12,6 +12,7 @@ namespace Project.Model
     {
 
         Player player = new Player();
+        Rectangle rectangle;
 
         public void UpdateMovement(float gameTime, KeyboardState currentKeyboardState, Enum currentPlayerForm)
         {
@@ -39,12 +40,13 @@ namespace Project.Model
             }
 
             player.UpdatePosition(gameTime);
+
         }
 
         public void Collision(Rectangle newRectangle, int xOffset, int yOffset, Camera camera)
         {
             Vector2 position = camera.getVisualCoords(player.getPosition());
-            Rectangle rectangle = new Rectangle((int)position.X, (int)position.Y, 32, 32);
+            rectangle = new Rectangle((int)position.X, (int)position.Y, 32, 32);
             
             if (rectangle.TouchTop(newRectangle))
             {
@@ -89,7 +91,6 @@ namespace Project.Model
             {
                 player.IsAlive = false;
                 position.Y = yOffset - rectangle.Height;
-                Console.WriteLine("Player alive: " + player.IsAlive);
             }
 
             // If player leaves top of a rectangle.
@@ -100,6 +101,28 @@ namespace Project.Model
             }
         }
 
+        public void PlayerGotPowerUp()
+        {
+            player.PlayerGotPowerUp = true;
+        }
+
+        public bool PlayerHasPowerUp()
+        {
+            if(player.PlayerGotPowerUp)
+            {
+                return true;
+            }
+            return false;
+        }
+        public bool isPlayerAlive()
+        {
+            if(player.IsAlive)
+            {
+                return true;
+            }
+            return false;
+        }
+
         public Vector2 getPosition()
         {
             return player.getPosition();
@@ -107,7 +130,7 @@ namespace Project.Model
 
         public Rectangle getRectangle()
         {
-            return player.Rectangle;
+            return rectangle;
         }
 
         public float getSize()

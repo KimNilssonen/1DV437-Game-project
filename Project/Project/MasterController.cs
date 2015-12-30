@@ -19,8 +19,10 @@ namespace Project
 
         MouseState currentMouseState = Mouse.GetState();
         MouseState lastMouseState;
+        KeyboardState currentKeyboardState = Keyboard.GetState();
+        KeyboardState lastKeyboardState;
 
-        // Menu stuff.
+        // Buttons.
         MainMenuButton playButton;
         MainMenuButton exitButton;
         MainMenuButton instructionsButton;
@@ -28,8 +30,12 @@ namespace Project
         MainMenuButton restartButton;
         MainMenuButton mainMenuButton;
 
+        // Textures
         Texture2D mainMenuBg;
         Texture2D pausedBg;
+        Texture2D instructionsBg;
+        Texture2D gameOverBg;
+
         Texture2D playButtonTexture;
         Texture2D restartButtonTexture;
         Texture2D resumeButtonTexture;
@@ -42,10 +48,11 @@ namespace Project
             MainMenu,
             Playing,
             Paused,
+            Instructions,
+            GameOver,
         }
 
         GameState currentGameState = GameState.MainMenu;
-        GameState lastGameState;
 
         int screenWidth = 1024, screenHeight = 600;
 
@@ -92,6 +99,8 @@ namespace Project
             // Menu stuff.
             mainMenuBg = Content.Load<Texture2D>("MainMenuBg");
             pausedBg = Content.Load<Texture2D>("PausedBackground");
+            instructionsBg = Content.Load<Texture2D>("InstructionsBackground");
+            gameOverBg = Content.Load<Texture2D>("GameOverBackground");
 
                 //Playbutton
             playButtonTexture = Content.Load<Texture2D>("PlayButton");
@@ -141,9 +150,10 @@ namespace Project
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-
+            lastKeyboardState = currentKeyboardState;
             lastMouseState = currentMouseState;
             currentMouseState = Mouse.GetState();
+            currentKeyboardState = Keyboard.GetState();
 
 
             switch(currentGameState)
@@ -151,16 +161,23 @@ namespace Project
                 case GameState.MainMenu:
                     if (playButton.isClicked && lastMouseState.LeftButton == ButtonState.Released)
                     {
-
-                        // TODO: Start new game here! NOT continue on last one.
-                        if(lastGameState == GameState.Paused)
-                        {
-                           // Test stuff. Worked like this. lastGameState is set when paused.
-                            Console.WriteLine("Yep");
-                        }
+                        LoadContent();
+                        // Old code.
+                        //if(lastGameState == GameState.Paused)
+                        //{
+                        //   // Test stuff. Worked like this. lastGameState is set when paused.
+                        //    Console.WriteLine("Yep");
+                        //}
                         currentGameState = GameState.Playing;
                         playButton.isClicked = false;
                     }
+
+                    if(instructionsButton.isClicked && lastMouseState.LeftButton == ButtonState.Released)
+                    {
+                        currentGameState = GameState.Instructions;
+                        instructionsButton.isClicked = false;
+                    }
+
                     if (exitButton.isClicked && lastMouseState.LeftButton == ButtonState.Released)
                     {
                         Exit();
@@ -171,31 +188,50 @@ namespace Project
                     exitButton.Update(currentMouseState);
                     break;
 
+                case GameState.Instructions:
+                    if (mainMenuButton.isClicked && lastMouseState.LeftButton == ButtonState.Released)
+                    {
+                        currentGameState = GameState.MainMenu;
+                        mainMenuButton.isClicked = false;
+                    }
+
+                    mainMenuButton.Update(currentMouseState);
+                    break;
+
                 case GameState.Playing:
-                    if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+                    if (currentKeyboardState.IsKeyDown(Keys.Escape) && lastKeyboardState.IsKeyUp(Keys.Escape))
                     {
                         currentGameState = GameState.Paused;
                     }
-
-
-                    gameController.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
+                    if(!gameController.GameOver)
+                    {
+                        gameController.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
+                    }
+                    else
+                    {
+                        currentGameState = GameState.GameOver;
+                    }
+                   
                     break;
-
 
                 case GameState.Paused:
                     {
-                        if (resumeButton.isClicked && lastMouseState.LeftButton == ButtonState.Released)
+                        if (resumeButton.isClicked && lastMouseState.LeftButton == ButtonState.Released ||
+                            currentKeyboardState.IsKeyDown(Keys.Escape) && lastKeyboardState.IsKeyUp(Keys.Escape))
                         {
                             currentGameState = GameState.Playing;
                             resumeButton.isClicked = false;
                         }
-                        if (restartButton.isClicked)
+                        if (restartButton.isClicked && lastMouseState.LeftButton == ButtonState.Released)
                         {
                             // TODO: Implement restart functionality!
+                            // LoadContent() will only work to restart first level atm... (2015-12-28)
+                            LoadContent();
+                            currentGameState = GameState.Playing;
+                            restartButton.isClicked = false;
                         }
                         if (mainMenuButton.isClicked && lastMouseState.LeftButton == ButtonState.Released)
                         {
-                            lastGameState = currentGameState;
                             currentGameState = GameState.MainMenu;
                             mainMenuButton.isClicked = false;
                         }
@@ -205,6 +241,27 @@ namespace Project
                         mainMenuButton.Update(currentMouseState);
                         break;
                     }
+
+                case GameState.GameOver:
+
+                    if (restartButton.isClicked && lastMouseState.LeftButton == ButtonState.Released)
+                    {
+                        // TODO: Implement restart functionality!
+                        // LoadContent() will only work to restart first level atm... (2015-12-28)
+                        LoadContent();
+                        currentGameState = GameState.Playing;
+                        restartButton.isClicked = false;
+                    }
+
+                    if (mainMenuButton.isClicked && lastMouseState.LeftButton == ButtonState.Released)
+                    {
+                        currentGameState = GameState.MainMenu;
+                        mainMenuButton.isClicked = false;
+                    }
+                    
+                    restartButton.Update(currentMouseState);
+                    mainMenuButton.Update(currentMouseState);
+                    break;
             }
 
             base.Update(gameTime);
@@ -222,12 +279,17 @@ namespace Project
             {
                 case GameState.MainMenu:
                     spriteBatch.Begin();
+                        spriteBatch.Draw(mainMenuBg, new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
+                        playButton.Draw(spriteBatch);
+                        instructionsButton.Draw(spriteBatch);
+                        exitButton.Draw(spriteBatch);
+                    spriteBatch.End();
+                    break;
 
-                    spriteBatch.Draw(mainMenuBg, new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
-                    playButton.Draw(spriteBatch);
-                    instructionsButton.Draw(spriteBatch);
-                    exitButton.Draw(spriteBatch);
-
+                case GameState.Instructions:
+                    spriteBatch.Begin();
+                        spriteBatch.Draw(instructionsBg, new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
+                        mainMenuButton.Draw(spriteBatch);
                     spriteBatch.End();
                     break;
 
@@ -236,14 +298,22 @@ namespace Project
                     break;
 
                 case GameState.Paused:
-
+                    // Should be drawn on current camera position.
+                    // To achieve this, I would need to send the current gamestate as parameter into gameController.
+                    // Both Update and Draw, or possibly the construct.
                     spriteBatch.Begin();
+                        spriteBatch.Draw(pausedBg, new Rectangle(0, 0, screenWidth, screenWidth), Color.White);
+                        resumeButton.Draw(spriteBatch);
+                        restartButton.Draw(spriteBatch);
+                        mainMenuButton.Draw(spriteBatch);
+                    spriteBatch.End();
+                    break;
 
-                    spriteBatch.Draw(pausedBg, new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
-                    resumeButton.Draw(spriteBatch);
-                    restartButton.Draw(spriteBatch);
-                    mainMenuButton.Draw(spriteBatch);
-
+                case GameState.GameOver:
+                    spriteBatch.Begin();
+                        spriteBatch.Draw(gameOverBg, new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
+                        restartButton.Draw(spriteBatch);
+                        mainMenuButton.Draw(spriteBatch);
                     spriteBatch.End();
                     break;
             }
