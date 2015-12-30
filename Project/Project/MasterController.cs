@@ -58,11 +58,13 @@ namespace Project
 
         public Project()
         {
+            // This comment is for test push since I got github problem.(?)
+
             graphics = new GraphicsDeviceManager(this);
             
             // Screen setup.
-            graphics.PreferredBackBufferWidth = screenWidth; //21*32;
-            graphics.PreferredBackBufferHeight = screenHeight; //10 * 32;
+            graphics.PreferredBackBufferWidth = screenWidth;
+            graphics.PreferredBackBufferHeight = screenHeight; 
             //graphics.IsFullScreen = true;
             graphics.ApplyChanges();
             

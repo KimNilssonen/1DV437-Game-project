@@ -11,7 +11,6 @@ using System.Text;
 
 namespace Project.Levels
 {
-    // This is like jonas MapSystem. Create a levelCreator class that creates the levels and put them in a list!
     class LevelSystem
     {
         Exit exit;

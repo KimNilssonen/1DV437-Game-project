@@ -37,3 +37,4 @@ D:\Skola\Grundläggande Spelprogrammering\1DV437-Game-project\Project\Project\bi
 D:\Skola\Grundläggande Spelprogrammering\1DV437-Game-project\Project\Project\bin\Windows\Release\SharpDX.Direct3D9.xml
 D:\Skola\Grundläggande Spelprogrammering\1DV437-Game-project\Project\Project\obj\x86\Release\Project.exe
 D:\Skola\Grundläggande Spelprogrammering\1DV437-Game-project\Project\Project\obj\x86\Release\Project.pdb
+D:\Skola\Grundläggande Spelprogrammering\1DV437-Game-project\Project\Project\obj\x86\Release\Project.csprojResolveAssemblyReference.cache
