@@ -28,6 +28,7 @@ namespace Project.Model
         private Rectangle rectangle;
         private bool isAlive = true;
         private bool playerGotPowerUp;
+        private bool playerGotToExit;
         private bool canJumpAgain;
         private bool canJump;
         private bool touchingFloor;
@@ -49,7 +50,13 @@ namespace Project.Model
         public bool PlayerGotPowerUp
         {
             get { return playerGotPowerUp; }
-            set { playerGotPowerUp = true; }
+            set { playerGotPowerUp = value; }
+        }
+
+        public bool PlayerGotToExit
+        {
+            get { return playerGotToExit; }
+            set { playerGotToExit = value; }
         }
 
         public bool CanJumpAgain

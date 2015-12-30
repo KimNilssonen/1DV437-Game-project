@@ -114,6 +114,12 @@ namespace Project.Model
             }
             return false;
         }
+
+        public void PlayerGotToExit()
+        {
+            player.PlayerGotToExit = true;
+        }
+
         public bool isPlayerAlive()
         {
             if(player.IsAlive)

@@ -38,3 +38,5 @@ D:\Skola\Grundläggande Spelprogrammering\1DV437-Game-project\Project\Project\bi
 D:\Skola\Grundläggande Spelprogrammering\1DV437-Game-project\Project\Project\obj\x86\Release\Project.exe
 D:\Skola\Grundläggande Spelprogrammering\1DV437-Game-project\Project\Project\obj\x86\Release\Project.pdb
 D:\Skola\Grundläggande Spelprogrammering\1DV437-Game-project\Project\Project\obj\x86\Release\Project.csprojResolveAssemblyReference.cache
+D:\Skola\Grundläggande Spelprogrammering\1DV437-Game-project\Project\Project\bin\Windows\Release\Content\nextLevelBackground.png
+D:\Skola\Grundläggande Spelprogrammering\1DV437-Game-project\Project\Project\bin\Windows\Release\Content\NextLevelButton.png

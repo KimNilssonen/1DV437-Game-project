@@ -29,12 +29,14 @@ namespace Project
         MainMenuButton resumeButton;
         MainMenuButton restartButton;
         MainMenuButton mainMenuButton;
+        MainMenuButton nextLevelButton;
 
         // Textures
         Texture2D mainMenuBg;
         Texture2D pausedBg;
         Texture2D instructionsBg;
         Texture2D gameOverBg;
+        Texture2D nextLevelBg;
 
         Texture2D playButtonTexture;
         Texture2D restartButtonTexture;
@@ -42,6 +44,7 @@ namespace Project
         Texture2D instructionsButtonTexture;
         Texture2D exitButtonTexture;
         Texture2D mainMenuButtonTexture;
+        Texture2D nextLevelButtonTexture;
 
         enum GameState
         {
@@ -50,6 +53,7 @@ namespace Project
             Paused,
             Instructions,
             GameOver,
+            FinishedLevel,
         }
 
         GameState currentGameState = GameState.MainMenu;
@@ -94,7 +98,6 @@ namespace Project
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-
             // GameControll stuff.
             gameController = new GameController(Content, graphics);
 
@@ -103,6 +106,7 @@ namespace Project
             pausedBg = Content.Load<Texture2D>("PausedBackground");
             instructionsBg = Content.Load<Texture2D>("InstructionsBackground");
             gameOverBg = Content.Load<Texture2D>("GameOverBackground");
+            nextLevelBg = Content.Load<Texture2D>("NextLevelBackground");
 
                 //Playbutton
             playButtonTexture = Content.Load<Texture2D>("PlayButton");
@@ -133,7 +137,11 @@ namespace Project
             mainMenuButtonTexture = Content.Load<Texture2D>("MainMenuButton");
             mainMenuButton = new MainMenuButton(mainMenuButtonTexture, graphics.GraphicsDevice);
             mainMenuButton.setPosition(new Vector2((screenWidth / 2 - mainMenuButtonTexture.Width / 2), (screenHeight / 2 + mainMenuButtonTexture.Height * 3)));
-            
+                
+                // Next level button
+            nextLevelButtonTexture = Content.Load<Texture2D>("NextLevelButton");
+            nextLevelButton = new MainMenuButton(nextLevelButtonTexture, graphics.GraphicsDevice);
+            nextLevelButton.setPosition((new Vector2((screenWidth / 2 - resumeButtonTexture.Width / 2), (screenHeight / 2 + resumeButtonTexture.Height))));
         }
 
         /// <summary>
@@ -208,6 +216,12 @@ namespace Project
                     if(!gameController.GameOver)
                     {
                         gameController.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
+
+                        if(gameController.FinishedLevel)
+                        {
+                            currentGameState = GameState.FinishedLevel;
+                        }
+
                     }
                     else
                     {
@@ -264,6 +278,29 @@ namespace Project
                     restartButton.Update(currentMouseState);
                     mainMenuButton.Update(currentMouseState);
                     break;
+
+                case GameState.FinishedLevel:
+
+                    if (restartButton.isClicked && lastMouseState.LeftButton == ButtonState.Released)
+                    {
+                        // TODO: Implement restart functionality!
+                        // LoadContent() will only work to restart first level atm... (2015-12-28)
+                        LoadContent();
+                        currentGameState = GameState.Playing;
+                        restartButton.isClicked = false;
+                    }
+
+                    if (mainMenuButton.isClicked && lastMouseState.LeftButton == ButtonState.Released)
+                    {
+                        currentGameState = GameState.MainMenu;
+                        mainMenuButton.isClicked = false;
+                    }
+
+                    nextLevelButton.Update(currentMouseState);
+                    restartButton.Update(currentMouseState);
+                    mainMenuButton.Update(currentMouseState);
+                    break;
+            
             }
 
             base.Update(gameTime);
@@ -316,6 +353,15 @@ namespace Project
                         spriteBatch.Draw(gameOverBg, new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
                         restartButton.Draw(spriteBatch);
                         mainMenuButton.Draw(spriteBatch);
+                    spriteBatch.End();
+                    break;
+
+                case GameState.FinishedLevel:
+                    spriteBatch.Begin();
+                    spriteBatch.Draw(nextLevelBg, new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
+                    nextLevelButton.Draw(spriteBatch);
+                    restartButton.Draw(spriteBatch);
+                    mainMenuButton.Draw(spriteBatch);
                     spriteBatch.End();
                     break;
             }

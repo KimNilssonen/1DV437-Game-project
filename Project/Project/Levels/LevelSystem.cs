@@ -82,7 +82,7 @@ namespace Project.Levels
             }
         }
 
-        public bool playerGetsPowerUp(Rectangle player)
+        public bool PlayerGetsPowerUp(Rectangle player)
         {
             if (powerUp != null)
             {
@@ -91,6 +91,15 @@ namespace Project.Levels
                     powerUp = null;
                     return true;
                 }
+            }
+            return false;
+        }
+
+        public bool PlayerGotToExit(Rectangle player)
+        {
+            if(exit.PlayerGotToExit(player))
+            {
+                return true;
             }
             return false;
         }

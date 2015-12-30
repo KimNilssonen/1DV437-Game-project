@@ -46,6 +46,13 @@ namespace Project.Controller
             set { gameOver = value; }
         }
 
+        private bool finishedLevel;
+        public bool FinishedLevel
+        {
+            get { return finishedLevel; }
+            set { finishedLevel = value; }
+        }
+
         public GameController(ContentManager Content, GraphicsDeviceManager graphics)
         {
             content = Content;
@@ -108,9 +115,13 @@ namespace Project.Controller
                     camera.Update(camera.getVisualCoords(playerSimulation.getPosition()), levelSystem.Width, levelSystem.Height);
                 }
 
-                if (levelSystem.playerGetsPowerUp(playerSimulation.getRectangle()))
+                if (levelSystem.PlayerGetsPowerUp(playerSimulation.getRectangle()))
                 {
                     playerSimulation.PlayerGotPowerUp();
+                }
+                if(levelSystem.PlayerGotToExit(playerSimulation.getRectangle()))
+                {
+                    FinishedLevel = true;
                 }
             }
             else

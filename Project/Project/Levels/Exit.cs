@@ -12,12 +12,26 @@ namespace Project.Levels
     class Exit
     {
         Texture2D texture;
-        Rectangle rectangle;
+        private Rectangle rectangle;
+        public Rectangle Rectangle
+        {
+            get { return rectangle; }
+            set { rectangle = value; }
+        }
 
         public Exit(ContentManager Content, Rectangle _rectangle)
         {
             texture = Content.Load<Texture2D>("Tile9");
             rectangle = _rectangle;
+        }
+
+        public bool PlayerGotToExit(Rectangle player)
+        {
+            if (Rectangle.Intersects(player))
+            {
+                return true;
+            }
+            return false;
         }
 
         public void Draw(SpriteBatch spriteBatch)
