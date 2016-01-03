@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using Project.View;
 using Project.Controller;
 using System;
+using Microsoft.Xna.Framework.Media;
 
 namespace Project
 {
@@ -14,6 +15,8 @@ namespace Project
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+
+        Song song;
 
         GameController gameController;
 
@@ -98,6 +101,11 @@ namespace Project
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            // Music
+            song = Content.Load<Song>("BackgroundSong");
+            MediaPlayer.Volume = 0.1f;
+            MediaPlayer.Play(song);
+
             // GameControll stuff.
             gameController = new GameController(Content, graphics);
 
@@ -171,13 +179,8 @@ namespace Project
                 case GameState.MainMenu:
                     if (playButton.isClicked && lastMouseState.LeftButton == ButtonState.Released)
                     {
-                        LoadContent();
-                        // Old code.
-                        //if(lastGameState == GameState.Paused)
-                        //{
-                        //   // Test stuff. Worked like this. lastGameState is set when paused.
-                        //    Console.WriteLine("Yep");
-                        //}
+                        gameController.SelectedLevel = 0;
+                        gameController.LoadLevel();
                         currentGameState = GameState.Playing;
                         playButton.isClicked = false;
                     }
@@ -220,14 +223,13 @@ namespace Project
                         if(gameController.FinishedLevel)
                         {
                             currentGameState = GameState.FinishedLevel;
+                            gameController.FinishedLevel = false;
                         }
-
                     }
                     else
                     {
                         currentGameState = GameState.GameOver;
                     }
-                   
                     break;
 
                 case GameState.Paused:
@@ -240,9 +242,7 @@ namespace Project
                         }
                         if (restartButton.isClicked && lastMouseState.LeftButton == ButtonState.Released)
                         {
-                            // TODO: Implement restart functionality!
-                            // LoadContent() will only work to restart first level atm... (2015-12-28)
-                            LoadContent();
+                            gameController.LoadLevel();
                             currentGameState = GameState.Playing;
                             restartButton.isClicked = false;
                         }
@@ -262,16 +262,16 @@ namespace Project
 
                     if (restartButton.isClicked && lastMouseState.LeftButton == ButtonState.Released)
                     {
-                        // TODO: Implement restart functionality!
-                        // LoadContent() will only work to restart first level atm... (2015-12-28)
-                        LoadContent();
+                        gameController.LoadLevel();
                         currentGameState = GameState.Playing;
+                        gameController.GameOver = false;
                         restartButton.isClicked = false;
                     }
 
                     if (mainMenuButton.isClicked && lastMouseState.LeftButton == ButtonState.Released)
                     {
                         currentGameState = GameState.MainMenu;
+                        gameController.GameOver = false;
                         mainMenuButton.isClicked = false;
                     }
                     
@@ -281,11 +281,17 @@ namespace Project
 
                 case GameState.FinishedLevel:
 
+                    if(nextLevelButton.isClicked && lastMouseState.LeftButton == ButtonState.Released)
+                    {
+                        gameController.SelectedLevel += 1;
+                        gameController.LoadLevel();
+                        currentGameState = GameState.Playing;
+                        nextLevelButton.isClicked = false;
+                    }
+
                     if (restartButton.isClicked && lastMouseState.LeftButton == ButtonState.Released)
                     {
-                        // TODO: Implement restart functionality!
-                        // LoadContent() will only work to restart first level atm... (2015-12-28)
-                        LoadContent();
+                        gameController.LoadLevel();
                         currentGameState = GameState.Playing;
                         restartButton.isClicked = false;
                     }

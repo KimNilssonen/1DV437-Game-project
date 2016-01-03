@@ -86,7 +86,7 @@ namespace Project.Model
                 player.speed.X = -0.05f;
             }
 
-            // If player falls, set IsAlive to false. Use this later to fix game over etc.
+            // If player falls, set IsAlive to false. 
             if (position.Y > yOffset - rectangle.Height)
             {
                 player.IsAlive = false;
@@ -127,6 +127,11 @@ namespace Project.Model
                 return true;
             }
             return false;
+        }
+
+        public void PlayerIsAlive()
+        {
+            player.IsAlive = true;
         }
 
         public Vector2 getPosition()

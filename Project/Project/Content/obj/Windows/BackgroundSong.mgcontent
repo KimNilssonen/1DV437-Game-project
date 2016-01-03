@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>D:/Skola/Grundläggande Spelprogrammering/1DV437-Game-project/Project/Project/Content/BackgroundSong.mp3</SourceFile>
+  <SourceTime>2015-12-30T02:07:49.7167995+01:00</SourceTime>
+  <DestFile>D:/Skola/Grundläggande Spelprogrammering/1DV437-Game-project/Project/Project/Content/bin/Windows/BackgroundSong.xnb</DestFile>
+  <DestTime>2016-01-03T18:29:42.9754597+01:00</DestTime>
+  <Importer>Mp3Importer</Importer>
+  <ImporterTime>2015-04-29T19:14:44+02:00</ImporterTime>
+  <Processor>SongProcessor</Processor>
+  <ProcessorTime>2015-04-29T19:14:44+02:00</ProcessorTime>
+  <Parameters>
+    <Key>Quality</Key>
+    <Value>Best</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput>
+    <string>D:/Skola/Grundläggande Spelprogrammering/1DV437-Game-project/Project/Project/Content/bin/Windows/BackgroundSong.wma</string>
+  </BuildOutput>
+</PipelineBuildEvent>

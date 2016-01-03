@@ -67,12 +67,11 @@ namespace Project.View
                 center.X = position.X;
             }
 
-            //Console.WriteLine("pos: " + position.Y + ", port: " + viewPort.Height + ", yOffset: " + yOffset);
             // Y
-            if (position.Y < viewPort.Height)
+            if (position.Y < viewPort.Height/2)
             {
                 // +40 so the platform rise a bit from the bottom.
-                center.Y = (viewPort.Height / 4);
+                center.Y = viewPort.Height/2;
             }
             else if (position.Y > yOffset - (viewPort.Height / 2))
             {

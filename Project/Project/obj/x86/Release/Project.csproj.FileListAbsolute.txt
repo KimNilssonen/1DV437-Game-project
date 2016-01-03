@@ -40,3 +40,6 @@ D:\Skola\Grundläggande Spelprogrammering\1DV437-Game-project\Project\Project\ob
 D:\Skola\Grundläggande Spelprogrammering\1DV437-Game-project\Project\Project\obj\x86\Release\Project.csprojResolveAssemblyReference.cache
 D:\Skola\Grundläggande Spelprogrammering\1DV437-Game-project\Project\Project\bin\Windows\Release\Content\nextLevelBackground.png
 D:\Skola\Grundläggande Spelprogrammering\1DV437-Game-project\Project\Project\bin\Windows\Release\Content\NextLevelButton.png
+D:\Skola\Grundläggande Spelprogrammering\1DV437-Game-project\Project\Project\bin\Windows\Release\Content\BackgroundSong.mp3
+D:\Skola\Grundläggande Spelprogrammering\1DV437-Game-project\Project\Project\bin\Windows\Release\Content\BackgroundSong.wma
+D:\Skola\Grundläggande Spelprogrammering\1DV437-Game-project\Project\Project\bin\Windows\Release\Content\BackgroundSong.xnb

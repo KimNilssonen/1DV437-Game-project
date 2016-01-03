@@ -38,7 +38,13 @@ namespace Project.Controller
         
         PlayerForm currentPlayerForm;
 
-        private int selectedLevel = 0;
+        private int selectedLevel;
+        public int SelectedLevel
+        {
+            get { return selectedLevel; }
+            set { selectedLevel = value; }
+        }
+
         private bool gameOver;
         public bool GameOver
         {
@@ -55,26 +61,30 @@ namespace Project.Controller
 
         public GameController(ContentManager Content, GraphicsDeviceManager graphics)
         {
+            SelectedLevel = 0;
             content = Content;
             currentPlayerForm = PlayerForm.Square;
 
             Tiles.Content = Content;
 
             camera = new Camera(graphics.GraphicsDevice.Viewport);
-            levelSystem = new LevelSystem(content, camera, selectedLevel);
-            
-
-            // If new game, load this player texture.
-            playerTexture = Content.Load<Texture2D>("PlayerSquare");
-
-            playerSimulation = new PlayerSimulation();
-            playerView = new PlayerView(camera, playerSimulation);
         }
         
 
-        public void Play()
+        public void LoadLevel()
         {
-            // Might need to load levels etc.
+            playerTexture = content.Load<Texture2D>("PlayerSquare");
+
+            playerSimulation = new PlayerSimulation();
+            playerView = new PlayerView(camera, playerSimulation);
+            playerSimulation.PlayerIsAlive();
+
+            levelSystem = new LevelSystem(content, camera, selectedLevel);
+
+            if(SelectedLevel != 0)
+            {
+                playerSimulation.PlayerGotPowerUp();
+            }
             
         }
 
@@ -102,6 +112,7 @@ namespace Project.Controller
         {
             if (playerSimulation.isPlayerAlive())
             {
+                Console.WriteLine("tja");
                 currentKeyboardState = Keyboard.GetState();
                 changePlayerTexture(currentKeyboardState);
 
@@ -127,6 +138,7 @@ namespace Project.Controller
             else
             {
                 GameOver = true;
+                Console.WriteLine("Död");
             }         
         }
 
