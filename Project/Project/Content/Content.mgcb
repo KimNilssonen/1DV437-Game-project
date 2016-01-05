@@ -19,3 +19,9 @@
 /processorParam:Quality=Best
 /build:BackgroundSong.mp3
 
+#begin Info.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:Info.spritefont
+

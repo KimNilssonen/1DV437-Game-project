@@ -42,8 +42,6 @@ namespace Project.Model
             }
 
             player.UpdatePosition(gameTime);
-            Console.WriteLine(player.position);
-            Console.WriteLine(newRecPosition);
 
         }
 
@@ -147,6 +145,10 @@ namespace Project.Model
         public void PlayerIsAlive()
         {
             player.IsAlive = true;
+        }
+        public void PlayerIsDead()
+        {
+            player.IsAlive = false;
         }
 
         public Vector2 getPosition()

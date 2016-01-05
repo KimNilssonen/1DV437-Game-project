@@ -16,14 +16,22 @@ namespace Project.Controller
     {
         // Model stuff.
         PlayerSimulation playerSimulation;
+        Enemy enemy;
 
         // Input stuff.
         KeyboardState currentKeyboardState;
 
         // View stuff.
         PlayerView playerView;
+        EnemyView enemyView;
         LevelSystem levelSystem;
         Camera camera;
+        Font font;
+        Font fontBorder;
+        Font fontBorder1;
+        Font fontBorder2;
+        Font fontBorder3;
+        string doubleJumpPowerUpInfo = "                    Awesome!\nI can now doublejump by switching to\ntriangle form in mid-air.I must reset the\njump by go back to a square again.";
 
         // Textures.
         Texture2D playerTexture;
@@ -82,6 +90,8 @@ namespace Project.Controller
             playerSimulation.PlayerIsAlive();
 
             levelSystem = new LevelSystem(content, camera, selectedLevel);
+            enemy = levelSystem.getEnemy();
+            enemyView = new EnemyView(camera, enemy);
 
             if(SelectedLevel != 0)
             {
@@ -119,12 +129,17 @@ namespace Project.Controller
                 changePlayerTexture(currentKeyboardState);
 
                 playerSimulation.UpdateMovement(gameTime, currentKeyboardState, currentPlayerForm);
+                levelSystem.Update(gameTime);
 
                 foreach (CollisionTiles tile in levelSystem.CollisionTiles)
                 {
                     
                     // Using camera in playerSimulation.Collision to be able to use rectangles.
                     playerSimulation.Collision(tile.Rectangle, levelSystem.Width, levelSystem.Height, camera);
+                    if (enemy != null)
+                    {
+                        enemy.Collision(tile.Rectangle, camera);
+                    }
                     camera.Update(camera.getVisualCoords(playerSimulation.getPosition()), levelSystem.Width, levelSystem.Height);
                 }
 
@@ -132,6 +147,11 @@ namespace Project.Controller
                 {
                     playerSimulation.PlayerGotPowerUp();
                 }
+                if (levelSystem.PlayerGetsHitByEnemy(playerSimulation.getRectangle()))
+                {
+                    playerSimulation.PlayerIsDead();
+                }
+
                 if(levelSystem.PlayerGotToExit(playerSimulation.getRectangle()))
                 {
                     FinishedLevel = true;
@@ -153,8 +173,34 @@ namespace Project.Controller
             // Messed around values and ended up with this.
             spriteBatch.Draw(gameBackgroundTexture, new Vector2(camera.Center.X/10, camera.Center.Y/20), Color.White);
             levelSystem.Draw(spriteBatch);
-            
             playerView.Draw(spriteBatch, playerTexture);
+            enemyView.Draw(spriteBatch, content.Load<Texture2D>("Tile6"));
+
+            if(playerSimulation.PlayerHasPowerUp() && selectedLevel == 0)
+            {
+
+            /*-- Used to get a border around the font-------------------------------------------------------------------*/
+                fontBorder = new Font(content.Load<SpriteFont>("Info"), new Vector2(levelSystem.getPowerUpPosition().X, levelSystem.getPowerUpPosition().Y - 2),
+                    doubleJumpPowerUpInfo, Color.Black);
+                fontBorder.Draw(spriteBatch);
+
+                fontBorder1 = new Font(content.Load<SpriteFont>("Info"), new Vector2(levelSystem.getPowerUpPosition().X, levelSystem.getPowerUpPosition().Y + 2),
+                    doubleJumpPowerUpInfo, Color.Black);
+                fontBorder1.Draw(spriteBatch);
+
+                fontBorder2 = new Font(content.Load<SpriteFont>("Info"), new Vector2(levelSystem.getPowerUpPosition().X - 2, levelSystem.getPowerUpPosition().Y),
+                    doubleJumpPowerUpInfo, Color.Black);
+                fontBorder2.Draw(spriteBatch);
+
+                fontBorder3 = new Font(content.Load<SpriteFont>("Info"), new Vector2(levelSystem.getPowerUpPosition().X + 2, levelSystem.getPowerUpPosition().Y),
+                    doubleJumpPowerUpInfo, Color.Black);
+                fontBorder3.Draw(spriteBatch);
+            /*---------------------------------------------------------------------------------------------------------*/
+
+                font = new Font(content.Load<SpriteFont>("Info"), levelSystem.getPowerUpPosition(),
+                    doubleJumpPowerUpInfo, Color.White);
+                font.Draw(spriteBatch);
+            }
 
             spriteBatch.End();
         }
