@@ -13,6 +13,8 @@ namespace Project.Model
 
         Player player = new Player();
         Rectangle rectangle;
+        Vector2 position;
+        Vector2 newRecPosition;
 
         public void UpdateMovement(float gameTime, KeyboardState currentKeyboardState, Enum currentPlayerForm)
         {
@@ -40,18 +42,33 @@ namespace Project.Model
             }
 
             player.UpdatePosition(gameTime);
+            Console.WriteLine(player.position);
+            Console.WriteLine(newRecPosition);
 
+        }
+
+        public void setStartPosition()
+        {
+            player.setStartPosition();
         }
 
         public void Collision(Rectangle newRectangle, int xOffset, int yOffset, Camera camera)
         {
-            Vector2 position = camera.getVisualCoords(player.getPosition());
+            position = camera.getVisualCoords(player.position);
             rectangle = new Rectangle((int)position.X, (int)position.Y, 32, 32);
-            
+
+            newRecPosition = camera.getLogicalCoords(new Vector2(newRectangle.X, newRectangle.Y));
+
+
+
             if (rectangle.TouchTop(newRectangle))
             {
-                position.Y = newRectangle.Y - rectangle.Height;
-
+                if(rectangle.Bottom > newRectangle.Top)
+                {
+                    player.position.Y = player.position.Y - 0.003f;
+                    player.speed.Y -= 0.01f;
+                }
+                
                 player.TouchingFloor = true;
                 player.CanJump = true;
                 player.CanJumpAgain = true;
@@ -59,13 +76,11 @@ namespace Project.Model
 
             if (rectangle.TouchLeft(newRectangle))
             {
-                position.X = newRectangle.X - rectangle.Width;
                 player.speed.X = -0.05f;
-                
+
             }
             if (rectangle.TouchRight(newRectangle))
             {
-                position.X = newRectangle.X + newRectangle.Width;
                 player.speed.X = 0.05f;
             }
 
@@ -94,7 +109,7 @@ namespace Project.Model
             }
 
             // If player leaves top of a rectangle.
-            if(position.X > newRectangle.X + newRectangle.Width)
+            if (position.X > newRectangle.X + newRectangle.Width)
             {
                 player.TouchingFloor = false;
                 player.CanJump = false;
@@ -136,7 +151,7 @@ namespace Project.Model
 
         public Vector2 getPosition()
         {
-            return player.getPosition();
+            return player.position;
         }
 
         public Rectangle getRectangle()

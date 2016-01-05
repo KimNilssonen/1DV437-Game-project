@@ -27,6 +27,7 @@ namespace Project.Controller
 
         // Textures.
         Texture2D playerTexture;
+        Texture2D gameBackgroundTexture;
 
         ContentManager content;
 
@@ -74,6 +75,7 @@ namespace Project.Controller
         public void LoadLevel()
         {
             playerTexture = content.Load<Texture2D>("PlayerSquare");
+            gameBackgroundTexture = content.Load<Texture2D>("GameBackground");
 
             playerSimulation = new PlayerSimulation();
             playerView = new PlayerView(camera, playerSimulation);
@@ -85,7 +87,8 @@ namespace Project.Controller
             {
                 playerSimulation.PlayerGotPowerUp();
             }
-            
+
+            playerSimulation.setStartPosition();
         }
 
         public void changePlayerTexture(KeyboardState currentKeyboardState)
@@ -112,7 +115,6 @@ namespace Project.Controller
         {
             if (playerSimulation.isPlayerAlive())
             {
-                Console.WriteLine("tja");
                 currentKeyboardState = Keyboard.GetState();
                 changePlayerTexture(currentKeyboardState);
 
@@ -120,7 +122,7 @@ namespace Project.Controller
 
                 foreach (CollisionTiles tile in levelSystem.CollisionTiles)
                 {
-
+                    
                     // Using camera in playerSimulation.Collision to be able to use rectangles.
                     playerSimulation.Collision(tile.Rectangle, levelSystem.Width, levelSystem.Height, camera);
                     camera.Update(camera.getVisualCoords(playerSimulation.getPosition()), levelSystem.Width, levelSystem.Height);
@@ -138,7 +140,6 @@ namespace Project.Controller
             else
             {
                 GameOver = true;
-                Console.WriteLine("Död");
             }         
         }
 
@@ -148,7 +149,9 @@ namespace Project.Controller
                               BlendState.AlphaBlend,
                               null, null, null, null,
                               camera.Transform);
-
+            // new Vector2(camera.Center.X/10, camera.Center.Y/20)... gives kind off a parallax scrolling background.
+            // Messed around values and ended up with this.
+            spriteBatch.Draw(gameBackgroundTexture, new Vector2(camera.Center.X/10, camera.Center.Y/20), Color.White);
             levelSystem.Draw(spriteBatch);
             
             playerView.Draw(spriteBatch, playerTexture);

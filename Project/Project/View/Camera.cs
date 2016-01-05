@@ -13,13 +13,14 @@ namespace Project.View
         private Matrix transform;
         public Matrix Transform
         {
-            get
-            {
-                return transform;
-            }
+            get { return transform; }
         }
 
         private Vector2 center;
+        public Vector2 Center
+        {
+            get { return center; }
+        }
         private Viewport viewPort;
 
         private float screenWidth;
@@ -47,6 +48,11 @@ namespace Project.View
             float logicalY = visualCoords.Y / screenHeight;
 
             return new Vector2(logicalX, logicalY);
+        }
+
+        public Vector2 getViewport()
+        {
+            return new Vector2(screenWidth, screenHeight);
         }
 
 

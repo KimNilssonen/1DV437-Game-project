@@ -10,7 +10,7 @@ namespace Project.Model
     class Player
     {
         // TODO: Fix start position.
-        Vector2 position = new Vector2(0.1f, 0.5f);
+        public Vector2 position;
 
         public Vector2 acceleration;
 
@@ -24,7 +24,7 @@ namespace Project.Model
         float standardGravity = 1.5f;
         float size = 0.025f;
 
-
+        // Privates.
         private Rectangle rectangle;
         private bool isAlive = true;
         private bool playerGotPowerUp;
@@ -34,7 +34,7 @@ namespace Project.Model
         private bool touchingFloor;
         private bool isFalling;
 
-
+        // Properties.
         public Rectangle Rectangle
         {
             get { return rectangle; }
@@ -83,6 +83,10 @@ namespace Project.Model
             set { isFalling = value; }
         }
 
+        public void setStartPosition()
+        {
+             position = new Vector2(0.1f, 0.1f);
+        }
 
         public void UpdatePosition(float gameTime)
         {
@@ -99,11 +103,6 @@ namespace Project.Model
                 
             speed = gameTime * acceleration + speed;
             position += speed * gameTime;
-        }
-
-        public Vector2 getPosition()
-        {
-            return position;
         }
 
         public void setSpeedLeft()
