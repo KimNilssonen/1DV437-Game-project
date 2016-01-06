@@ -16,7 +16,7 @@ namespace Project.Levels
         Exit exit;
         PowerUp powerUp;
         Vector2 powerUpPosition;
-        Enemy enemy;
+        //Enemy enemy;
 
         ContentManager content;
         Camera camera;
@@ -72,10 +72,6 @@ namespace Project.Levels
                         {
                             powerUp = new PowerUp(content, new Rectangle(x * size+12, y * size+12, size-12, size-12));
                         }
-                        else if(textureIndex == 6)
-                        {
-                            enemy = new Enemy(content, new Rectangle(x * size, y * size, size, size));
-                        }
                         else
                         {
                             collisionTiles.Add(new CollisionTiles(textureIndex, new Rectangle(x * size, y * size, size, size)));
@@ -85,14 +81,6 @@ namespace Project.Levels
                     }
 
                 }
-            }
-        }
-
-        public void Update(float gameTime)
-        {
-            if (enemy != null)
-            {
-                enemy.UpdatePosition(gameTime);
             }
         }
 
@@ -108,23 +96,6 @@ namespace Project.Levels
                 }
             }
             return false;
-        }
-
-        public bool PlayerGetsHitByEnemy(Rectangle player)
-        {
-            if (enemy != null)
-            {
-                if (enemy.playerGetsHitByEnemy(player))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        public Enemy getEnemy()
-        {
-            return enemy;
         }
 
         public bool PlayerGotToExit(Rectangle player)

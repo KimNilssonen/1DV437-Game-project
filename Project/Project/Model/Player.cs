@@ -27,7 +27,8 @@ namespace Project.Model
         // Privates.
         private Rectangle rectangle;
         private bool isAlive = true;
-        private bool playerGotPowerUp;
+        private bool playerGotJumpPowerUp;
+        private bool playerGotSprintPowerUp;
         private bool playerGotToExit;
         private bool canJumpAgain;
         private bool canJump;
@@ -47,10 +48,16 @@ namespace Project.Model
             set { isAlive = value; }
         }
 
-        public bool PlayerGotPowerUp
+        public bool PlayerGotJumpPowerUp
         {
-            get { return playerGotPowerUp; }
-            set { playerGotPowerUp = value; }
+            get { return playerGotJumpPowerUp; }
+            set { playerGotJumpPowerUp = value; }
+        }
+
+        public bool PlayerGotSprintPowerUp
+        {
+            get { return playerGotSprintPowerUp; }
+            set { playerGotSprintPowerUp = value; }
         }
 
         public bool PlayerGotToExit

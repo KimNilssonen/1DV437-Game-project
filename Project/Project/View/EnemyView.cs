@@ -12,22 +12,26 @@ namespace Project.View
     {
 
         Texture2D enemyTexture;
-        Enemy enemy;
+        List<Enemy> enemies;
         Camera camera;
 
-        public EnemyView(Camera newCamera, Enemy newEnemy)
+        public EnemyView(Camera newCamera, List<Enemy> newEnemyList)
         {
             camera = newCamera;
-            enemy = newEnemy;
+            enemies = newEnemyList;
+
         }
 
         public void Draw(SpriteBatch spriteBatch, Texture2D newTexture)
         {
-            if (enemy != null)
+            if (enemies.Count != 0)
             {
-                enemyTexture = newTexture;
-                //float playerScale = camera.getTextureScale(playerTexture.Width, playerSimulation.getSize());
-                spriteBatch.Draw(enemyTexture, camera.getVisualCoords(enemy.position), Color.White);
+                foreach (Enemy enemy in enemies)
+                {
+                    enemyTexture = newTexture;
+                    //float playerScale = camera.getTextureScale(playerTexture.Width, playerSimulation.getSize());
+                    spriteBatch.Draw(enemyTexture, camera.getVisualCoords(enemy.Position), Color.White);
+                }
             }
         }
 

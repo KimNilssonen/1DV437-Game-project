@@ -179,7 +179,7 @@ namespace Project
                 case GameState.MainMenu:
                     if (playButton.isClicked && lastMouseState.LeftButton == ButtonState.Released)
                     {
-                        gameController.SelectedLevel = 0;
+                        gameController.SelectedLevel = 2;
                         gameController.LoadLevel();
                         currentGameState = GameState.Playing;
                         playButton.isClicked = false;

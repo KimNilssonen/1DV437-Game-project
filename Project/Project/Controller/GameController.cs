@@ -16,7 +16,7 @@ namespace Project.Controller
     {
         // Model stuff.
         PlayerSimulation playerSimulation;
-        Enemy enemy;
+        List<Enemy> enemies = new List<Enemy>();
 
         // Input stuff.
         KeyboardState currentKeyboardState;
@@ -90,12 +90,36 @@ namespace Project.Controller
             playerSimulation.PlayerIsAlive();
 
             levelSystem = new LevelSystem(content, camera, selectedLevel);
-            enemy = levelSystem.getEnemy();
-            enemyView = new EnemyView(camera, enemy);
+            enemies.Clear();
+            Enemy enemy;
+            
 
             if(SelectedLevel != 0)
             {
-                playerSimulation.PlayerGotPowerUp();
+                playerSimulation.PlayerGotJumpPowerUp();
+
+                // Maybe should've put this in a separate "enemyController" class.
+                if (SelectedLevel == 1)
+                {
+                    //-------------- (new position------------, new speed--------------, isSpecial)
+                    enemy = new Enemy(new Vector2(1.3f, 0.65f), new Vector2(0.5f, 0.0f), false);
+                    enemies.Add(enemy);
+                    enemy = new Enemy(new Vector2(1.8f, 0.55f), new Vector2(-0.2f, 0.0f), false);
+                    enemies.Add(enemy);
+                }
+
+                if(SelectedLevel == 2)
+                {
+                    enemy = new Enemy(new Vector2(0.99f, 0.1f), new Vector2(0.0f, 0.3f), false);
+                    enemies.Add(enemy);
+
+                    enemy = new Enemy(new Vector2(1.3f, 0.35f), new Vector2(-0.3f, 0.0f), false);
+                    enemies.Add(enemy);
+                    enemy = new Enemy(new Vector2(1.3f, 0.47f), new Vector2(0.3f, 0.0f), false);
+                    enemies.Add(enemy);
+                }
+
+                enemyView = new EnemyView(camera, enemies);
             }
 
             playerSimulation.setStartPosition();
@@ -114,7 +138,7 @@ namespace Project.Controller
                 playerTexture = content.Load<Texture2D>("PlayerSquare");
                 currentPlayerForm = PlayerForm.Square;
             }
-            else if (currentKeyboardState.IsKeyDown(Keys.D2) && playerSimulation.PlayerHasPowerUp())
+            else if (currentKeyboardState.IsKeyDown(Keys.D2) && playerSimulation.PlayerHasJumpPowerUp())
             {
                 playerTexture = content.Load<Texture2D>("PlayerTriangle");
                 currentPlayerForm = PlayerForm.Triangle;
@@ -123,33 +147,50 @@ namespace Project.Controller
 
         public void Update(float gameTime)
         {
+
             if (playerSimulation.isPlayerAlive())
             {
                 currentKeyboardState = Keyboard.GetState();
                 changePlayerTexture(currentKeyboardState);
 
                 playerSimulation.UpdateMovement(gameTime, currentKeyboardState, currentPlayerForm);
-                levelSystem.Update(gameTime);
 
                 foreach (CollisionTiles tile in levelSystem.CollisionTiles)
                 {
                     
                     // Using camera in playerSimulation.Collision to be able to use rectangles.
                     playerSimulation.Collision(tile.Rectangle, levelSystem.Width, levelSystem.Height, camera);
-                    if (enemy != null)
+                    if (enemies.Count != 0)
                     {
-                        enemy.Collision(tile.Rectangle, camera);
+                        foreach (Enemy enemy in enemies)
+                        {
+                            enemy.Collision(tile.Rectangle, camera);
+                        }
                     }
                     camera.Update(camera.getVisualCoords(playerSimulation.getPosition()), levelSystem.Width, levelSystem.Height);
                 }
 
                 if (levelSystem.PlayerGetsPowerUp(playerSimulation.getRectangle()))
                 {
-                    playerSimulation.PlayerGotPowerUp();
+                    if (SelectedLevel == 0)
+                    {
+                        playerSimulation.PlayerGotJumpPowerUp();
+                    }
+                    if(SelectedLevel == 2)
+                    {
+                        playerSimulation.PlayerGotSprintPowerUp();
+                    }
                 }
-                if (levelSystem.PlayerGetsHitByEnemy(playerSimulation.getRectangle()))
+                if (enemies.Count != 0)
                 {
-                    playerSimulation.PlayerIsDead();
+                    foreach (Enemy enemy in enemies)
+                    {
+                        enemy.UpdatePosition(gameTime);
+                        if (enemy.playerGetsHitByEnemy(playerSimulation.getRectangle()))
+                        {
+                            playerSimulation.PlayerIsDead();
+                        }
+                    }
                 }
 
                 if(levelSystem.PlayerGotToExit(playerSimulation.getRectangle()))
@@ -169,14 +210,22 @@ namespace Project.Controller
                               BlendState.AlphaBlend,
                               null, null, null, null,
                               camera.Transform);
+
             // new Vector2(camera.Center.X/10, camera.Center.Y/20)... gives kind off a parallax scrolling background.
             // Messed around values and ended up with this.
             spriteBatch.Draw(gameBackgroundTexture, new Vector2(camera.Center.X/10, camera.Center.Y/20), Color.White);
             levelSystem.Draw(spriteBatch);
             playerView.Draw(spriteBatch, playerTexture);
-            enemyView.Draw(spriteBatch, content.Load<Texture2D>("Tile6"));
 
-            if(playerSimulation.PlayerHasPowerUp() && selectedLevel == 0)
+            if (enemies.Count != 0)
+            {
+                foreach (Enemy enemy in enemies)
+                {
+                    enemyView.Draw(spriteBatch, content.Load<Texture2D>("Tile6"));
+                }
+            }
+
+            if(playerSimulation.PlayerHasJumpPowerUp() && selectedLevel == 0)
             {
 
             /*-- Used to get a border around the font-------------------------------------------------------------------*/

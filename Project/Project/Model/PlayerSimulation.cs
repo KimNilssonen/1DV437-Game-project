@@ -114,15 +114,29 @@ namespace Project.Model
             }
         }
 
-        public void PlayerGotPowerUp()
+        public void PlayerGotJumpPowerUp()
         {
-            player.PlayerGotPowerUp = true;
+            player.PlayerGotJumpPowerUp = true;
         }
 
-        public bool PlayerHasPowerUp()
+        public bool PlayerHasJumpPowerUp()
         {
-            if(player.PlayerGotPowerUp)
+            if (player.PlayerGotJumpPowerUp)
             {
+                return true;
+            }
+            return false;
+        }
+        public void PlayerGotSprintPowerUp()
+        {
+            player.PlayerGotSprintPowerUp = true;
+        }
+
+        public bool PlayerHasSprintPowerUp()
+        {
+            if(player.PlayerGotSprintPowerUp)
+            {
+                Console.WriteLine("SPRINT");
                 return true;
             }
             return false;
