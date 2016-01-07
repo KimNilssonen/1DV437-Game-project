@@ -31,7 +31,7 @@ namespace Project.Controller
         Font fontBorder1;
         Font fontBorder2;
         Font fontBorder3;
-        string doubleJumpPowerUpInfo = "                    Awesome!\nI can now doublejump by switching to\ntriangle form in mid-air.I must reset the\njump by go back to a square again.";
+        string powerUpInfo; 
 
         // Textures.
         Texture2D playerTexture;
@@ -42,7 +42,8 @@ namespace Project.Controller
         public enum PlayerForm
         {
             Square,
-            Triangle
+            Triangle,
+            Circle,
         }
         
         PlayerForm currentPlayerForm;
@@ -70,18 +71,17 @@ namespace Project.Controller
 
         public GameController(ContentManager Content, GraphicsDeviceManager graphics)
         {
-            SelectedLevel = 0;
             content = Content;
-            currentPlayerForm = PlayerForm.Square;
-
             Tiles.Content = Content;
-
             camera = new Camera(graphics.GraphicsDevice.Viewport);
         }
         
 
         public void LoadLevel()
         {
+
+            currentPlayerForm = PlayerForm.Square;
+
             playerTexture = content.Load<Texture2D>("PlayerSquare");
             gameBackgroundTexture = content.Load<Texture2D>("GameBackground");
 
@@ -101,6 +101,7 @@ namespace Project.Controller
                 // Maybe should've put this in a separate "enemyController" class.
                 if (SelectedLevel == 1)
                 {
+                    // ------ isSpecial parameter if I want to make one specific enemy move a certain way.
                     //-------------- (new position------------, new speed--------------, isSpecial)
                     enemy = new Enemy(new Vector2(1.3f, 0.65f), new Vector2(0.5f, 0.0f), false);
                     enemies.Add(enemy);
@@ -116,6 +117,12 @@ namespace Project.Controller
                     enemy = new Enemy(new Vector2(1.3f, 0.35f), new Vector2(-0.3f, 0.0f), false);
                     enemies.Add(enemy);
                     enemy = new Enemy(new Vector2(1.3f, 0.47f), new Vector2(0.3f, 0.0f), false);
+                    enemies.Add(enemy);
+                    enemy = new Enemy(new Vector2(1.9f, 0.33f), new Vector2(0.2f, 0.0f), false);
+                    enemies.Add(enemy);
+                    enemy = new Enemy(new Vector2(2.0f, 0.81f), new Vector2(0.15f, 0.0f), false);
+                    enemies.Add(enemy);
+                    enemy = new Enemy(new Vector2(2.075f, 0.81f), new Vector2(0.0f, 0.15f), false);
                     enemies.Add(enemy);
                 }
 
@@ -142,6 +149,11 @@ namespace Project.Controller
             {
                 playerTexture = content.Load<Texture2D>("PlayerTriangle");
                 currentPlayerForm = PlayerForm.Triangle;
+            }
+            else if(currentKeyboardState.IsKeyDown(Keys.D3) && playerSimulation.PlayerHasSprintPowerUp())
+            {
+                playerTexture = content.Load<Texture2D>("PlayerCircle");
+                currentPlayerForm = PlayerForm.Circle;
             }
         }
 
@@ -227,29 +239,59 @@ namespace Project.Controller
 
             if(playerSimulation.PlayerHasJumpPowerUp() && selectedLevel == 0)
             {
+                powerUpInfo = "                    Awesome!\nI can now doublejump by switching to\ntriangle form in mid-air.I must reset the\njump by go back to a square again.";
+                Vector2 fontPosition = new Vector2(levelSystem.getPowerUpPosition().X - levelSystem.getPowerUpPosition().X / 8, levelSystem.getPowerUpPosition().Y);
 
             /*-- Used to get a border around the font-------------------------------------------------------------------*/
-                fontBorder = new Font(content.Load<SpriteFont>("Info"), new Vector2(levelSystem.getPowerUpPosition().X, levelSystem.getPowerUpPosition().Y - 2),
-                    doubleJumpPowerUpInfo, Color.Black);
+                fontBorder = new Font(content.Load<SpriteFont>("Info"), new Vector2(fontPosition.X, fontPosition.Y - 2),
+                    powerUpInfo, Color.Black);
                 fontBorder.Draw(spriteBatch);
 
-                fontBorder1 = new Font(content.Load<SpriteFont>("Info"), new Vector2(levelSystem.getPowerUpPosition().X, levelSystem.getPowerUpPosition().Y + 2),
-                    doubleJumpPowerUpInfo, Color.Black);
+                fontBorder1 = new Font(content.Load<SpriteFont>("Info"), new Vector2(fontPosition.X, fontPosition.Y + 2),
+                    powerUpInfo, Color.Black);
                 fontBorder1.Draw(spriteBatch);
 
-                fontBorder2 = new Font(content.Load<SpriteFont>("Info"), new Vector2(levelSystem.getPowerUpPosition().X - 2, levelSystem.getPowerUpPosition().Y),
-                    doubleJumpPowerUpInfo, Color.Black);
+                fontBorder2 = new Font(content.Load<SpriteFont>("Info"), new Vector2(fontPosition.X - 2, fontPosition.Y),
+                    powerUpInfo, Color.Black);
                 fontBorder2.Draw(spriteBatch);
 
-                fontBorder3 = new Font(content.Load<SpriteFont>("Info"), new Vector2(levelSystem.getPowerUpPosition().X + 2, levelSystem.getPowerUpPosition().Y),
-                    doubleJumpPowerUpInfo, Color.Black);
+                fontBorder3 = new Font(content.Load<SpriteFont>("Info"), new Vector2(fontPosition.X + 2, fontPosition.Y),
+                    powerUpInfo, Color.Black);
                 fontBorder3.Draw(spriteBatch);
             /*---------------------------------------------------------------------------------------------------------*/
 
-                font = new Font(content.Load<SpriteFont>("Info"), levelSystem.getPowerUpPosition(),
-                    doubleJumpPowerUpInfo, Color.White);
+                font = new Font(content.Load<SpriteFont>("Info"), new Vector2(levelSystem.getPowerUpPosition().X - levelSystem.getPowerUpPosition().X/8, levelSystem.getPowerUpPosition().Y),
+                    powerUpInfo, Color.White);
                 font.Draw(spriteBatch);
             }
+
+            if (playerSimulation.PlayerHasSprintPowerUp() && selectedLevel == 2)
+            {
+                powerUpInfo = "                    Awesome!\nI can now sprint by switching to\ncircle form. The jump is not as good though.";
+                /*-- Used to get a border around the font-------------------------------------------------------------------*/
+                fontBorder = new Font(content.Load<SpriteFont>("Info"), new Vector2(levelSystem.getPowerUpPosition().X, levelSystem.getPowerUpPosition().Y - 2),
+                    powerUpInfo, Color.Black);
+                fontBorder.Draw(spriteBatch);
+
+                fontBorder1 = new Font(content.Load<SpriteFont>("Info"), new Vector2(levelSystem.getPowerUpPosition().X, levelSystem.getPowerUpPosition().Y + 2),
+                    powerUpInfo, Color.Black);
+                fontBorder1.Draw(spriteBatch);
+
+                fontBorder2 = new Font(content.Load<SpriteFont>("Info"), new Vector2(levelSystem.getPowerUpPosition().X - 2, levelSystem.getPowerUpPosition().Y),
+                    powerUpInfo, Color.Black);
+                fontBorder2.Draw(spriteBatch);
+
+                fontBorder3 = new Font(content.Load<SpriteFont>("Info"), new Vector2(levelSystem.getPowerUpPosition().X + 2, levelSystem.getPowerUpPosition().Y),
+                    powerUpInfo, Color.Black);
+                fontBorder3.Draw(spriteBatch);
+                /*---------------------------------------------------------------------------------------------------------*/
+
+                font = new Font(content.Load<SpriteFont>("Info"), levelSystem.getPowerUpPosition(),
+                    powerUpInfo, Color.White);
+                font.Draw(spriteBatch);
+            }
+
+            
 
             spriteBatch.End();
         }

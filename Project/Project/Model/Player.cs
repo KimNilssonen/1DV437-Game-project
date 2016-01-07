@@ -9,7 +9,6 @@ namespace Project.Model
 {
     class Player
     {
-        // TODO: Fix start position.
         public Vector2 position;
 
         public Vector2 acceleration;
@@ -17,9 +16,12 @@ namespace Project.Model
         public Vector2 speed = Vector2.Zero;
 
         // X movement stuff.
-        float maxSpeed = 0.175f;
         float deAccelerate = 0.03f;
         float accelerate = 0.01f;
+        float standardMaxSpeed = 0.175f;
+        float maxSpeed;
+
+        float jumpSpeed = 0.6f;
 
         float standardGravity = 1.5f;
         float size = 0.025f;
@@ -90,6 +92,12 @@ namespace Project.Model
             set { isFalling = value; }
         }
 
+        // Constructor
+        public Player()
+        {
+            maxSpeed = standardMaxSpeed;
+        }
+
         public void setStartPosition()
         {
              position = new Vector2(0.1f, 0.1f);
@@ -112,18 +120,44 @@ namespace Project.Model
             position += speed * gameTime;
         }
 
-        public void setSpeedLeft()
+        public void setSpeedLeft(Enum currentPlayerForm)
         {
             speed.X -= accelerate;
+
+            if (currentPlayerForm.ToString() == "Circle")
+            {
+                maxSpeed = standardMaxSpeed * 2;
+            }
+            else
+            {
+                if(TouchingFloor)
+                {
+                    maxSpeed = standardMaxSpeed;
+                }
+            }
+
             if(speed.X <= -maxSpeed)
             {
                 speed.X = -maxSpeed;
             }
         }
 
-        public void setSpeedRight()
+        public void setSpeedRight(Enum currentPlayerForm)
         {
             speed.X += accelerate;
+
+            if (currentPlayerForm.ToString() == "Circle")
+            {
+                maxSpeed = 0.35f;
+            }
+            else
+            {
+                if (TouchingFloor)
+                {
+                    maxSpeed = standardMaxSpeed;
+                }
+            }
+
             if (speed.X >= maxSpeed)
             {
                 speed.X = maxSpeed;
@@ -157,14 +191,21 @@ namespace Project.Model
         {
             if(CanJump && CanJumpAgain)
             {
-                speed.Y = -0.6f;
+                if(currentPlayerForm.ToString() == "Circle")
+                {
+                    speed.Y = -jumpSpeed + 0.2f;
+                }
+                else
+                {
+                    speed.Y = -jumpSpeed;
+                }
                 CanJump = false;
             }
             else if(!CanJump && CanJumpAgain)
             {
                 if (currentPlayerForm.ToString() == "Triangle")
                 {
-                    speed.Y = -0.6f;
+                    speed.Y = -jumpSpeed;
                     CanJumpAgain = false;
                 }
             }

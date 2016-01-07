@@ -90,7 +90,7 @@ namespace Project.Levels
             {
                 if (powerUp.playerGetsPowerUp(player))
                 {
-                    powerUpPosition = new Vector2(powerUp.Rectangle.X-powerUp.Rectangle.Width*8, powerUp.Rectangle.Y-powerUp.Rectangle.Height*3);
+                    powerUpPosition = new Vector2(powerUp.Rectangle.X-powerUp.Rectangle.Width, powerUp.Rectangle.Y-powerUp.Rectangle.Height*3);
                     powerUp = null;
                     return true;
                 }

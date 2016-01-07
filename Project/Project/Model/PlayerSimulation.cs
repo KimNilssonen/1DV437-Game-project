@@ -26,12 +26,12 @@ namespace Project.Model
 
             if (currentKeyboardState.IsKeyDown(Keys.Left))
             {
-                player.setSpeedLeft();
+                player.setSpeedLeft(currentPlayerForm);
             }
 
             if (currentKeyboardState.IsKeyDown(Keys.Right))
             {
-                player.setSpeedRight();
+                player.setSpeedRight(currentPlayerForm);
             }
 
             if(currentKeyboardState.IsKeyUp(Keys.Left) &&
@@ -58,7 +58,6 @@ namespace Project.Model
             newRecPosition = camera.getLogicalCoords(new Vector2(newRectangle.X, newRectangle.Y));
 
 
-
             if (rectangle.TouchTop(newRectangle))
             {
                 if(rectangle.Bottom > newRectangle.Top)
@@ -74,7 +73,7 @@ namespace Project.Model
 
             if (rectangle.TouchLeft(newRectangle))
             {
-                player.speed.X = -0.05f;
+                player.speed.X = -0.06f;
 
             }
             if (rectangle.TouchRight(newRectangle))
@@ -84,7 +83,7 @@ namespace Project.Model
 
             if (rectangle.TouchBottom(newRectangle))
             {
-                player.speed.Y = 0.5f;
+                player.speed.Y = 0.1f;
             }
 
             if (position.X < 0)
@@ -136,7 +135,6 @@ namespace Project.Model
         {
             if(player.PlayerGotSprintPowerUp)
             {
-                Console.WriteLine("SPRINT");
                 return true;
             }
             return false;
