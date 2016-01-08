@@ -4,7 +4,7 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
-    <File>D:/Skola/Grundläggande Spelprogrammering/1DV437-Game-project/Project/Project/Content/BackgroundSong.mp3</File>
     <File>D:/Skola/Grundläggande Spelprogrammering/1DV437-Game-project/Project/Project/Content/Info.spritefont</File>
+    <File>D:/Skola/Grundläggande Spelprogrammering/1DV437-Game-project/Project/Project/Content/BackgroundSong.mp3</File>
   </SourceFiles>
 </SourceFileCollection>

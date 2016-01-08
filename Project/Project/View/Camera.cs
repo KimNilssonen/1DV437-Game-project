@@ -76,7 +76,6 @@ namespace Project.View
             // Y
             if (position.Y < viewPort.Height/2)
             {
-                // +40 so the platform rise a bit from the bottom.
                 center.Y = viewPort.Height/2;
             }
             else if (position.Y > yOffset - (viewPort.Height / 2))
@@ -91,51 +90,5 @@ namespace Project.View
             transform = Matrix.CreateTranslation(new Vector3(-center.X + (viewPort.Width/2),
                                                              -center.Y + (viewPort.Height/2),0));
         }
-
-        //float scaleX;
-        //float scaleY;
-
-        //// Used for resizing all textures.
-        //float overallSize = 1.0f;
-
-        //public Camera(Viewport viewPort)
-        //{
-        //    scaleX = viewPort.Width;
-        //    scaleY = viewPort.Height;
-
-        //}
-
-        //public Vector2 getVisualCoords(Vector2 logicalCoords, float textureWidth, float textureHeight)
-        //{
-
-        //    float visualX = (logicalCoords.X * scaleX) - textureWidth / 2;
-        //    float visualY = (logicalCoords.Y * scaleY) - textureHeight / 2;
-
-        //    return new Vector2(visualX, visualY);
-        //}
-
-
-        //public Vector2 getLogicalCoords(Vector2 visualCoords)
-        //{
-        //    float logicalX = (visualCoords.X) / scaleX;
-        //    float logicalY = (visualCoords.Y) / scaleY;
-        //    //Console.WriteLine(logicalX + " " + logicalY);
-        //    return new Vector2(logicalX, logicalY);
-        //}
-
-        //public float getTextureScale(float textureWidth, float size)
-        //{
-        //    return scaleX * (size * overallSize) / textureWidth;
-        //}
-
-        //public Rectangle getGameArea()
-        //{
-        //    return new Rectangle(0, 0, (int)scaleX, (int)scaleY);
-        //}
-
-        //public Vector2 getViewport()
-        //{
-        //    return new Vector2(scaleX, scaleY);
-        //}
     }
 }

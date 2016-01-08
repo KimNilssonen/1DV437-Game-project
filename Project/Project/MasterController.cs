@@ -5,6 +5,8 @@ using Project.View;
 using Project.Controller;
 using System;
 using Microsoft.Xna.Framework.Media;
+using System.Media;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Project
 {
@@ -17,7 +19,7 @@ namespace Project
         SpriteBatch spriteBatch;
 
         Song song;
-
+        
         GameController gameController;
 
         MouseState currentMouseState = Mouse.GetState();
@@ -65,13 +67,12 @@ namespace Project
 
         public Project()
         {
-            // This comment is for test push since I got github problem.(?)
 
             graphics = new GraphicsDeviceManager(this);
             
             // Screen setup.
             graphics.PreferredBackBufferWidth = screenWidth;
-            graphics.PreferredBackBufferHeight = screenHeight; 
+            graphics.PreferredBackBufferHeight = screenHeight;
             //graphics.IsFullScreen = true;
             graphics.ApplyChanges();
             
@@ -103,7 +104,7 @@ namespace Project
 
             // Music
             song = Content.Load<Song>("BackgroundSong");
-            MediaPlayer.Volume = 0.1f;
+            MediaPlayer.Volume = 0.2f;
             MediaPlayer.Play(song);
 
             // GameControll stuff.
@@ -173,10 +174,10 @@ namespace Project
             currentMouseState = Mouse.GetState();
             currentKeyboardState = Keyboard.GetState();
 
-
             switch(currentGameState)
             {
                 case GameState.MainMenu:
+                    MediaPlayer.Volume = 0.1f;
                     if (playButton.isClicked && lastMouseState.LeftButton == ButtonState.Released)
                     {
                         gameController.SelectedLevel = 0;
@@ -212,6 +213,7 @@ namespace Project
                     break;
 
                 case GameState.Playing:
+                    MediaPlayer.Volume = 0.2f;
                     if (currentKeyboardState.IsKeyDown(Keys.Escape) && lastKeyboardState.IsKeyUp(Keys.Escape))
                     {
                         currentGameState = GameState.Paused;
@@ -233,7 +235,7 @@ namespace Project
                     break;
 
                 case GameState.Paused:
-                    {
+                    MediaPlayer.Volume = 0.025f;
                         if (resumeButton.isClicked && lastMouseState.LeftButton == ButtonState.Released ||
                             currentKeyboardState.IsKeyDown(Keys.Escape) && lastKeyboardState.IsKeyUp(Keys.Escape))
                         {
@@ -256,10 +258,9 @@ namespace Project
                         restartButton.Update(currentMouseState);
                         mainMenuButton.Update(currentMouseState);
                         break;
-                    }
+                    
 
                 case GameState.GameOver:
-
                     if (restartButton.isClicked && lastMouseState.LeftButton == ButtonState.Released)
                     {
                         gameController.LoadLevel();
@@ -280,7 +281,6 @@ namespace Project
                     break;
 
                 case GameState.FinishedLevel:
-
                     if(nextLevelButton.isClicked && lastMouseState.LeftButton == ButtonState.Released)
                     {
                         gameController.SelectedLevel += 1;
@@ -343,9 +343,6 @@ namespace Project
                     break;
 
                 case GameState.Paused:
-                    // Should be drawn on current camera position.
-                    // To achieve this, I would need to send the current gamestate as parameter into gameController.
-                    // Both Update and Draw, or possibly the construct.
                     spriteBatch.Begin();
                         spriteBatch.Draw(pausedBg, new Rectangle(0, 0, screenWidth, screenWidth), Color.White);
                         resumeButton.Draw(spriteBatch);

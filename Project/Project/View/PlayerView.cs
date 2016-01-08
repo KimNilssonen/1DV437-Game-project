@@ -23,8 +23,6 @@ namespace Project.View
         public void Draw(SpriteBatch spriteBatch, Texture2D newPlayerTexture)
         {
             playerTexture = newPlayerTexture;
-
-            //float playerScale = camera.getTextureScale(playerTexture.Width, playerSimulation.getSize());
             spriteBatch.Draw(playerTexture, camera.getVisualCoords(playerSimulation.getPosition()), Color.White);
         }
     }

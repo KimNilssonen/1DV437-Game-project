@@ -11,7 +11,8 @@ namespace Project.Model
 {
     class Enemy
     {
-        public Vector2 position;
+        private Vector2 position;
+        private Vector2 newPos;
         public Vector2 acceleration = new Vector2(0.0f, 0.0f);
         public Vector2 speed;
 
@@ -30,7 +31,7 @@ namespace Project.Model
 
         public Enemy(Vector2 newPosition, Vector2 newSpeed, bool special)
         {
-            position = newPosition;
+            Position = newPosition;
             speed = newSpeed;
             isSpecial = special;
         }
@@ -49,13 +50,12 @@ namespace Project.Model
             
             speed = gameTime * acceleration + speed;
             position += speed * gameTime;
-
         }
+
 
         public void Collision(Rectangle newRectangle, Camera camera)
         {
-            Vector2 newPos = position;
-            newPos = camera.getVisualCoords(position);
+            newPos = camera.getVisualCoords(Position);
             Rectangle = new Rectangle((int)newPos.X, (int)newPos.Y, 32, 32);
 
             //newRecPosition = camera.getLogicalCoords(new Vector2(newRectangle.X, newRectangle.Y));

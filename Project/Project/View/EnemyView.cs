@@ -29,7 +29,6 @@ namespace Project.View
                 foreach (Enemy enemy in enemies)
                 {
                     enemyTexture = newTexture;
-                    //float playerScale = camera.getTextureScale(playerTexture.Width, playerSimulation.getSize());
                     spriteBatch.Draw(enemyTexture, camera.getVisualCoords(enemy.Position), Color.White);
                 }
             }
