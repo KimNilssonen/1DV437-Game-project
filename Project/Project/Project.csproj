@@ -47,6 +47,7 @@
     <Compile Include="Levels\LevelCreator.cs" />
     <Compile Include="Levels\PowerUp.cs" />
     <Compile Include="MasterController.cs" />
+    <Compile Include="Model\Observer.cs" />
     <Compile Include="Model\RectangleHelper.cs" />
     <Compile Include="Levels\LevelSystem.cs" />
     <Compile Include="Levels\Tiles.cs" />
@@ -71,6 +72,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\BackgroundSong.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\SoundFX\impactSFX.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\SoundFX\jumpSFX.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\SoundFX\loseSFX.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\PlayerCircle.png">
@@ -136,6 +146,12 @@
     <Content Include="Content\PlayerSquare.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\SoundFX\transformSFX.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\SoundFX\winSFX.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -146,6 +162,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

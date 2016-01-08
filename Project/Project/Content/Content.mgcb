@@ -25,3 +25,33 @@
 /processorParam:Quality=Best
 /build:BackgroundSong.mp3
 
+#begin SoundFX/impactSFX.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundFX/impactSFX.wav
+
+#begin SoundFX/jumpSFX.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundFX/jumpSFX.wav
+
+#begin SoundFX/loseSFX.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundFX/loseSFX.wav
+
+#begin SoundFX/transformSFX.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundFX/transformSFX.wav
+
+#begin SoundFX/winSFX.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundFX/winSFX.wav
+

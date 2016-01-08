@@ -6,5 +6,10 @@
   <SourceFiles>
     <File>D:/Skola/Grundläggande Spelprogrammering/1DV437-Game-project/Project/Project/Content/Info.spritefont</File>
     <File>D:/Skola/Grundläggande Spelprogrammering/1DV437-Game-project/Project/Project/Content/BackgroundSong.mp3</File>
+    <File>D:/Skola/Grundläggande Spelprogrammering/1DV437-Game-project/Project/Project/Content/SoundFX/impactSFX.wav</File>
+    <File>D:/Skola/Grundläggande Spelprogrammering/1DV437-Game-project/Project/Project/Content/SoundFX/jumpSFX.wav</File>
+    <File>D:/Skola/Grundläggande Spelprogrammering/1DV437-Game-project/Project/Project/Content/SoundFX/loseSFX.wav</File>
+    <File>D:/Skola/Grundläggande Spelprogrammering/1DV437-Game-project/Project/Project/Content/SoundFX/transformSFX.wav</File>
+    <File>D:/Skola/Grundläggande Spelprogrammering/1DV437-Game-project/Project/Project/Content/SoundFX/winSFX.wav</File>
   </SourceFiles>
 </SourceFileCollection>

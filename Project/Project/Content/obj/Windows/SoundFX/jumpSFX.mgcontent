@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>D:/Skola/Grundläggande Spelprogrammering/1DV437-Game-project/Project/Project/Content/SoundFX/jumpSFX.wav</SourceFile>
+  <SourceTime>2016-01-08T16:07:25.4380541+01:00</SourceTime>
+  <DestFile>D:/Skola/Grundläggande Spelprogrammering/1DV437-Game-project/Project/Project/Content/bin/Windows/SoundFX/jumpSFX.xnb</DestFile>
+  <DestTime>2016-01-08T17:58:39.4444741+01:00</DestTime>
+  <Importer>WavImporter</Importer>
+  <ImporterTime>2015-04-29T19:14:44+02:00</ImporterTime>
+  <Processor>SoundEffectProcessor</Processor>
+  <ProcessorTime>2015-04-29T19:14:44+02:00</ProcessorTime>
+  <Parameters>
+    <Key>Quality</Key>
+    <Value>Best</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>

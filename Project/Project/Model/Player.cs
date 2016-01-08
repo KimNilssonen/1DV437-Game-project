@@ -15,6 +15,8 @@ namespace Project.Model
 
         public Vector2 speed = Vector2.Zero;
 
+        int counter;
+
         // X movement stuff.
         float deAccelerate = 0.03f;
         float accelerate = 0.01f;
@@ -103,16 +105,22 @@ namespace Project.Model
              position = new Vector2(0.1f, 0.1f);
         }
 
-        public void UpdatePosition(float gameTime)
+        public void UpdatePosition(float gameTime, Observer observer)
         {
-
             if(TouchingFloor && IsFalling)
             {
+                counter = 0;
                 StandOnGround();
             }
             else if(!TouchingFloor && !IsFalling)
             {
                 Fall();
+            }
+
+            if(TouchingFloor && !IsFalling && counter < 1)
+            {
+                counter = 1;
+                observer.playerLanded();
             }
             
                 
@@ -187,10 +195,11 @@ namespace Project.Model
             }
         }
 
-        public void Jump(Enum currentPlayerForm)
+        public void Jump(Enum currentPlayerForm, Observer observer)
         {
             if(CanJump && CanJumpAgain)
             {
+                observer.playerJump();
                 if(currentPlayerForm.ToString() == "Circle")
                 {
                     speed.Y = -jumpSpeed + 0.2f;
@@ -203,8 +212,10 @@ namespace Project.Model
             }
             else if(!CanJump && CanJumpAgain)
             {
+
                 if (currentPlayerForm.ToString() == "Triangle")
                 {
+                    observer.playerJump();
                     speed.Y = -jumpSpeed;
                     CanJumpAgain = false;
                 }

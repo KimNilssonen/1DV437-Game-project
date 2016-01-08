@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using Splitter;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Project.Controller
 {
@@ -95,7 +96,7 @@ namespace Project.Controller
             
 
             playerSimulation = new PlayerSimulation();
-            playerView = new PlayerView(camera, playerSimulation);
+            playerView = new PlayerView(camera, playerSimulation, content);
             playerSimulation.PlayerIsAlive();
 
             splitterSystem = new SplitterSystem(content, playerSimulation, camera);
@@ -147,7 +148,8 @@ namespace Project.Controller
             // if(input == 2) playerTexture = Content.Load<Texture2D>("PlayerTriangle");
             // if(input == 3) playerTexture = Content.Load<Texture2D>("PlayerCircle");
             // etc...
-            
+
+            //soundEffect = content.Load<SoundEffect>("SoundFX/transformSFX");
 
             if(currentKeyboardState.IsKeyDown(Keys.D1))
             {
@@ -161,6 +163,7 @@ namespace Project.Controller
             {
                 if (currentPlayerForm != PlayerForm.Triangle)
                 {
+                    playerSimulation.playerTransformed(playerView);
                     splitterList.Add(new SplitterSystem(content, playerSimulation, camera));
                     playerTexture = content.Load<Texture2D>("PlayerTriangle");
                     currentPlayerForm = PlayerForm.Triangle;
@@ -170,6 +173,7 @@ namespace Project.Controller
             {
                 if (currentPlayerForm != PlayerForm.Circle)
                 {
+                    playerSimulation.playerTransformed(playerView);
                     playerTexture = content.Load<Texture2D>("PlayerCircle");
                     currentPlayerForm = PlayerForm.Circle;
                 }
@@ -207,14 +211,14 @@ namespace Project.Controller
                     splitterList.Add(new SplitterSystem(content, playerSimulation, camera));
                 }
 
-                playerSimulation.UpdateMovement(gameTime, currentKeyboardState, currentPlayerForm);
+                playerSimulation.UpdateMovement(gameTime, currentKeyboardState, currentPlayerForm, playerView);
                 
 
                 foreach (CollisionTiles tile in levelSystem.CollisionTiles)
                 {
                     
                     // Using camera in playerSimulation.Collision to be able to use rectangles.
-                    playerSimulation.Collision(tile.Rectangle, levelSystem.Width, levelSystem.Height, camera);
+                    playerSimulation.Collision(tile.Rectangle, levelSystem.Width, levelSystem.Height, camera, playerView);
                     if (enemies.Count != 0)
                     {
                         foreach (Enemy enemy in enemies)
@@ -250,11 +254,13 @@ namespace Project.Controller
 
                 if(levelSystem.PlayerGotToExit(playerSimulation.getRectangle()))
                 {
+                    playerSimulation.playerWon(playerView);
                     FinishedLevel = true;
                 }
             }
             else
             {
+                playerSimulation.playerDied(playerView);
                 GameOver = true;
             }
         }

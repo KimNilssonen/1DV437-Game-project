@@ -104,7 +104,7 @@ namespace Project
 
             // Music
             song = Content.Load<Song>("BackgroundSong");
-            MediaPlayer.Volume = 0.2f;
+            MediaPlayer.Volume = 0.15f;
             MediaPlayer.Play(song);
 
             // GameControll stuff.
@@ -213,7 +213,7 @@ namespace Project
                     break;
 
                 case GameState.Playing:
-                    MediaPlayer.Volume = 0.2f;
+                    MediaPlayer.Volume = 0.1f;
                     if (currentKeyboardState.IsKeyDown(Keys.Escape) && lastKeyboardState.IsKeyUp(Keys.Escape))
                     {
                         currentGameState = GameState.Paused;

@@ -16,12 +16,12 @@ namespace Project.Model
         Vector2 position;
         Vector2 newRecPosition;
 
-        public void UpdateMovement(float gameTime, KeyboardState currentKeyboardState, Enum currentPlayerForm)
+        public void UpdateMovement(float gameTime, KeyboardState currentKeyboardState, Enum currentPlayerForm, Observer observer)
         {
-            
+
             if (currentKeyboardState.IsKeyDown(Keys.Up))
             {
-                player.Jump(currentPlayerForm);   
+                player.Jump(currentPlayerForm, observer);
             }
 
             if (currentKeyboardState.IsKeyDown(Keys.Left))
@@ -41,7 +41,7 @@ namespace Project.Model
                 player.setSpeedZero();
             }
 
-            player.UpdatePosition(gameTime);
+            player.UpdatePosition(gameTime, observer);
 
         }
 
@@ -50,7 +50,7 @@ namespace Project.Model
             player.setStartPosition();
         }
 
-        public void Collision(Rectangle newRectangle, int xOffset, int yOffset, Camera camera)
+        public void Collision(Rectangle newRectangle, int xOffset, int yOffset, Camera camera, Observer observer)
         {
             position = camera.getVisualCoords(player.position);
             rectangle = new Rectangle((int)position.X, (int)position.Y, 32, 32);
@@ -65,7 +65,6 @@ namespace Project.Model
                     player.position.Y = player.position.Y - 0.003f;
                     player.speed.Y -= 0.01f;
                 }
-                
                 player.TouchingFloor = true;
                 player.CanJump = true;
                 player.CanJumpAgain = true;
@@ -176,6 +175,22 @@ namespace Project.Model
         public float getSize()
         {
             return player.getSize();
+        }
+
+    // Observer stuff for using sounds.
+        internal void playerDied(Observer observer)
+        {
+            observer.playerDied();
+        }
+
+        internal void playerWon(Observer observer)
+        {
+            observer.playerWon();
+        }
+
+        internal void playerTransformed(Observer observer)
+        {
+            observer.playerTransformed();
         }
     }
 }

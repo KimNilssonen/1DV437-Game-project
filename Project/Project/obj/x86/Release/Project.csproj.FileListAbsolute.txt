@@ -50,3 +50,13 @@ D:\Skola\Grundläggande Spelprogrammering\1DV437-Game-project\Project\Project\bi
 D:\Skola\Grundläggande Spelprogrammering\1DV437-Game-project\Project\Project\bin\Windows\Release\Content\spark.png
 D:\Skola\Grundläggande Spelprogrammering\1DV437-Game-project\Project\Project\bin\Windows\Release\Content\BackgroundSong.wma
 D:\Skola\Grundläggande Spelprogrammering\1DV437-Game-project\Project\Project\bin\Windows\Release\Content\BackgroundSong.xnb
+D:\Skola\Grundläggande Spelprogrammering\1DV437-Game-project\Project\Project\bin\Windows\Release\Content\SoundFX\impactSFX.wav
+D:\Skola\Grundläggande Spelprogrammering\1DV437-Game-project\Project\Project\bin\Windows\Release\Content\SoundFX\jumpSFX.wav
+D:\Skola\Grundläggande Spelprogrammering\1DV437-Game-project\Project\Project\bin\Windows\Release\Content\SoundFX\loseSFX.wav
+D:\Skola\Grundläggande Spelprogrammering\1DV437-Game-project\Project\Project\bin\Windows\Release\Content\SoundFX\transformSFX.wav
+D:\Skola\Grundläggande Spelprogrammering\1DV437-Game-project\Project\Project\bin\Windows\Release\Content\SoundFX\winSFX.wav
+D:\Skola\Grundläggande Spelprogrammering\1DV437-Game-project\Project\Project\bin\Windows\Release\Content\SoundFX\impactSFX.xnb
+D:\Skola\Grundläggande Spelprogrammering\1DV437-Game-project\Project\Project\bin\Windows\Release\Content\SoundFX\jumpSFX.xnb
+D:\Skola\Grundläggande Spelprogrammering\1DV437-Game-project\Project\Project\bin\Windows\Release\Content\SoundFX\loseSFX.xnb
+D:\Skola\Grundläggande Spelprogrammering\1DV437-Game-project\Project\Project\bin\Windows\Release\Content\SoundFX\transformSFX.xnb
+D:\Skola\Grundläggande Spelprogrammering\1DV437-Game-project\Project\Project\bin\Windows\Release\Content\SoundFX\winSFX.xnb
