@@ -21,6 +21,7 @@ namespace Project
         Song song;
         
         GameController gameController;
+        Camera camera;
 
         MouseState currentMouseState = Mouse.GetState();
         MouseState lastMouseState;
@@ -42,6 +43,7 @@ namespace Project
         Texture2D instructionsBg;
         Texture2D gameOverBg;
         Texture2D nextLevelBg;
+        Texture2D gameCompleteBg;
 
         Texture2D playButtonTexture;
         Texture2D restartButtonTexture;
@@ -73,7 +75,7 @@ namespace Project
             // Screen setup.
             graphics.PreferredBackBufferWidth = screenWidth;
             graphics.PreferredBackBufferHeight = screenHeight;
-            //graphics.IsFullScreen = true;
+            graphics.IsFullScreen = false;
             graphics.ApplyChanges();
             
             IsMouseVisible = true;
@@ -102,13 +104,16 @@ namespace Project
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            camera = new Camera(graphics.GraphicsDevice.Viewport);
+
             // Music
             song = Content.Load<Song>("BackgroundSong");
             MediaPlayer.Volume = 0.15f;
             MediaPlayer.Play(song);
+            MediaPlayer.IsRepeating = true;
 
             // GameControll stuff.
-            gameController = new GameController(Content, graphics);
+            gameController = new GameController(Content, graphics, camera);
 
             // Menu stuff.
             mainMenuBg = Content.Load<Texture2D>("MainMenuBg");
@@ -116,40 +121,41 @@ namespace Project
             instructionsBg = Content.Load<Texture2D>("InstructionsBackground");
             gameOverBg = Content.Load<Texture2D>("GameOverBackground");
             nextLevelBg = Content.Load<Texture2D>("NextLevelBackground");
+            gameCompleteBg = Content.Load<Texture2D>("GameComplete");
 
                 //Playbutton
             playButtonTexture = Content.Load<Texture2D>("PlayButton");
-            playButton = new MainMenuButton(playButtonTexture, graphics.GraphicsDevice);
+            playButton = new MainMenuButton(playButtonTexture, graphics.GraphicsDevice, camera);
             playButton.setPosition(new Vector2((screenWidth / 2 - playButtonTexture.Width / 2), (screenHeight / 2 + playButtonTexture.Height)));
 
                 // Instructions button
             instructionsButtonTexture = Content.Load<Texture2D>("InstructionsButton");
-            instructionsButton = new MainMenuButton(instructionsButtonTexture, graphics.GraphicsDevice);
+            instructionsButton = new MainMenuButton(instructionsButtonTexture, graphics.GraphicsDevice, camera);
             instructionsButton.setPosition(new Vector2((screenWidth / 2 - instructionsButtonTexture.Width / 2), (screenHeight / 2 + instructionsButtonTexture.Height * 2)));
 
                 // Exit button
             exitButtonTexture = Content.Load<Texture2D>("ExitButton");
-            exitButton = new MainMenuButton(exitButtonTexture, graphics.GraphicsDevice);
+            exitButton = new MainMenuButton(exitButtonTexture, graphics.GraphicsDevice, camera);
             exitButton.setPosition(new Vector2((screenWidth / 2 - exitButtonTexture.Width / 2), (screenHeight / 2 + exitButtonTexture.Height * 3)));
 
                 // ResumeButton
             resumeButtonTexture = Content.Load<Texture2D>("ResumeButton");
-            resumeButton = new MainMenuButton(resumeButtonTexture, graphics.GraphicsDevice);
+            resumeButton = new MainMenuButton(resumeButtonTexture, graphics.GraphicsDevice, camera);
             resumeButton.setPosition(new Vector2((screenWidth / 2 - resumeButtonTexture.Width / 2), (screenHeight / 2 + resumeButtonTexture.Height)));
 
                 //Restart button
             restartButtonTexture = Content.Load<Texture2D>("RestartButton");
-            restartButton = new MainMenuButton(restartButtonTexture, graphics.GraphicsDevice);
+            restartButton = new MainMenuButton(restartButtonTexture, graphics.GraphicsDevice, camera);
             restartButton.setPosition(new Vector2((screenWidth / 2 - restartButtonTexture.Width / 2), (screenHeight / 2 + restartButtonTexture.Height * 2)));
 
                 // Mainmenu button
             mainMenuButtonTexture = Content.Load<Texture2D>("MainMenuButton");
-            mainMenuButton = new MainMenuButton(mainMenuButtonTexture, graphics.GraphicsDevice);
+            mainMenuButton = new MainMenuButton(mainMenuButtonTexture, graphics.GraphicsDevice, camera);
             mainMenuButton.setPosition(new Vector2((screenWidth / 2 - mainMenuButtonTexture.Width / 2), (screenHeight / 2 + mainMenuButtonTexture.Height * 3)));
                 
                 // Next level button
             nextLevelButtonTexture = Content.Load<Texture2D>("NextLevelButton");
-            nextLevelButton = new MainMenuButton(nextLevelButtonTexture, graphics.GraphicsDevice);
+            nextLevelButton = new MainMenuButton(nextLevelButtonTexture, graphics.GraphicsDevice, camera);
             nextLevelButton.setPosition((new Vector2((screenWidth / 2 - resumeButtonTexture.Width / 2), (screenHeight / 2 + resumeButtonTexture.Height))));
         }
 
@@ -242,7 +248,8 @@ namespace Project
                             currentGameState = GameState.Playing;
                             resumeButton.isClicked = false;
                         }
-                        if (restartButton.isClicked && lastMouseState.LeftButton == ButtonState.Released)
+                        if (restartButton.isClicked && lastMouseState.LeftButton == ButtonState.Released ||
+                            currentKeyboardState.IsKeyDown(Keys.R) && lastKeyboardState.IsKeyUp(Keys.R))
                         {
                             gameController.LoadLevel();
                             currentGameState = GameState.Playing;
@@ -261,7 +268,8 @@ namespace Project
                     
 
                 case GameState.GameOver:
-                    if (restartButton.isClicked && lastMouseState.LeftButton == ButtonState.Released)
+                    if (restartButton.isClicked && lastMouseState.LeftButton == ButtonState.Released ||
+                        currentKeyboardState.IsKeyDown(Keys.R) && lastKeyboardState.IsKeyUp(Keys.R))
                     {
                         gameController.LoadLevel();
                         currentGameState = GameState.Playing;
@@ -361,10 +369,17 @@ namespace Project
 
                 case GameState.FinishedLevel:
                     spriteBatch.Begin();
-                    spriteBatch.Draw(nextLevelBg, new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
-                    nextLevelButton.Draw(spriteBatch);
-                    restartButton.Draw(spriteBatch);
-                    mainMenuButton.Draw(spriteBatch);
+                        if (gameController.SelectedLevel == 2)
+                        {
+                            spriteBatch.Draw(gameCompleteBg, new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
+                        }
+                        else
+                        {
+                            spriteBatch.Draw(nextLevelBg, new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
+                            nextLevelButton.Draw(spriteBatch);
+                            restartButton.Draw(spriteBatch);
+                        }
+                        mainMenuButton.Draw(spriteBatch);
                     spriteBatch.End();
                     break;
             }

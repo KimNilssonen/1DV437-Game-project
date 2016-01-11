@@ -78,11 +78,11 @@ namespace Project.Controller
             set { finishedLevel = value; }
         }
 
-        public GameController(ContentManager Content, GraphicsDeviceManager graphics)
+        public GameController(ContentManager Content, GraphicsDeviceManager graphics, Camera newCamera)
         {
             content = Content;
             Tiles.Content = Content;
-            camera = new Camera(graphics.GraphicsDevice.Viewport);
+            camera = newCamera;
         }
         
 
@@ -149,8 +149,6 @@ namespace Project.Controller
             // if(input == 3) playerTexture = Content.Load<Texture2D>("PlayerCircle");
             // etc...
 
-            //soundEffect = content.Load<SoundEffect>("SoundFX/transformSFX");
-
             if(currentKeyboardState.IsKeyDown(Keys.D1))
             {
                 if (currentPlayerForm != PlayerForm.Square)
@@ -182,7 +180,7 @@ namespace Project.Controller
 
         public void Update(float gameTime)
         {
-
+            
             if (playerSimulation.isPlayerAlive())
             {
                 currentKeyboardState = Keyboard.GetState();

@@ -13,6 +13,7 @@ namespace Project.View
         Texture2D texture;
         Vector2 position;
         Rectangle rectangle;
+        Camera camera;
 
         Color color = new Color(255, 255, 255, 255);
         byte fading = 5;
@@ -22,9 +23,10 @@ namespace Project.View
         bool down;
         public bool isClicked;
 
-        public MainMenuButton(Texture2D newTexture, GraphicsDevice graphics)
+        public MainMenuButton(Texture2D newTexture, GraphicsDevice graphics, Camera newCamera)
         {
             texture = newTexture;
+            camera = newCamera;
             size = new Vector2(graphics.Viewport.Width / 6, graphics.Viewport.Height / 20);
 
         }
@@ -32,7 +34,6 @@ namespace Project.View
         public void Update(MouseState mouseState)
         {
             rectangle = new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y);
-
             Rectangle mouseRectangle = new Rectangle(mouseState.X, mouseState.Y, 1, 1);
 
             if (mouseRectangle.Intersects(rectangle))

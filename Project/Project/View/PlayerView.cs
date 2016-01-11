@@ -61,7 +61,7 @@ namespace Project.View
         public void playerLanded()
         {
             soundEffect = content.Load<SoundEffect>("SoundFX/impactSFX");
-            soundEffect.Play(0.4f, 0.0f, 0.0f);
+            soundEffect.Play(0.6f, 0.0f, 0.0f);
         }
     }
 }

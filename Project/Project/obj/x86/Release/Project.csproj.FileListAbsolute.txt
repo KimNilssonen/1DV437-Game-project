@@ -60,3 +60,8 @@ D:\Skola\Grundläggande Spelprogrammering\1DV437-Game-project\Project\Project\bi
 D:\Skola\Grundläggande Spelprogrammering\1DV437-Game-project\Project\Project\bin\Windows\Release\Content\SoundFX\loseSFX.xnb
 D:\Skola\Grundläggande Spelprogrammering\1DV437-Game-project\Project\Project\bin\Windows\Release\Content\SoundFX\transformSFX.xnb
 D:\Skola\Grundläggande Spelprogrammering\1DV437-Game-project\Project\Project\bin\Windows\Release\Content\SoundFX\winSFX.xnb
+D:\Skola\Grundläggande Spelprogrammering\1DV437-Game-project\Project\Project\bin\Windows\Release\Content\GameComplete.png
+D:\Skola\Grundläggande Spelprogrammering\1DV437-Game-project\Project\Project\bin\Windows\Release\Project.exe.manifest
+D:\Skola\Grundläggande Spelprogrammering\1DV437-Game-project\Project\Project\bin\Windows\Release\Project.application
+D:\Skola\Grundläggande Spelprogrammering\1DV437-Game-project\Project\Project\obj\x86\Release\Project.exe.manifest
+D:\Skola\Grundläggande Spelprogrammering\1DV437-Game-project\Project\Project\obj\x86\Release\Project.application
